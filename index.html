@@ -146,6 +146,174 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Nginx使用总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">Nginx使用总结</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  	<time datetime="2022-03-13T07:07:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Nginx使用总结"><a href="#Nginx使用总结" class="headerlink" title="Nginx使用总结"></a>Nginx使用总结</h1><blockquote>
+<p>本文着重介绍Nginx的使用方法，主要包含Nginx进程管理，常用配置和TCP内核参数优化等内容。</p>
+</blockquote>
+<h2 id="Nginx进程管理"><a href="#Nginx进程管理" class="headerlink" title="Nginx进程管理"></a>Nginx进程管理</h2><ul>
+<li><p>可以用向Nginx发送信号的方式管理Nginx进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload		#重新加载配置文件，对应信号HUP</span><br><span class="line">nginx -s reopen		#重新写日志，对应信号USR1</span><br><span class="line">nginx -s stop		#关闭nginx，对应信号TERM</span><br><span class="line">nginx -s quit		#优雅退出nginx，对应信号QUIT</span><br></pre></td></tr></table></figure></li>
+<li><p>配置文件热更新的流程(nginx -s reload)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx能实现配置文件热更新是具有其master和worker的多进程模型，其具体操作步骤如下:</span><br><span class="line">(1) 当用户输入nginx -s reload命令时，会先读取pid文件获取master进程的pid，然后对master进程发送HUP信号</span><br><span class="line">(2) master进程在收到HUP信号后，会启动新的worker进程，这些新启动的worker进程加载最新的配置文件，之后会向老的worker进程发送QUIT信号(优雅退出)</span><br><span class="line">(3) 在完成新老worker进程的更替后，nginx整体对外便实现了配置热加载的功能</span><br></pre></td></tr></table></figure></li>
+</ul>
+        
+          <a class="article-more-a" href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nginx</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Nginx源码入门指南" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/">Nginx源码入门指南</a>
+    </h1>
+  
+
+        
+        <a href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" class="archive-article-date">
+  	<time datetime="2022-03-13T06:45:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Nginx源码入门指南"><a href="#Nginx源码入门指南" class="headerlink" title="Nginx源码入门指南"></a>Nginx源码入门指南</h1><blockquote>
+<p>引言：</p>
+<p>​        Nginx作为我们常用的反向代理服务，其优秀的性能和扩展性获得了众多大厂的青睐，Nginx的源码在设计上有很多值得我们学习的地方，本文将介绍一些Nginx源码的一些基础概念，为读者阅读源码扫除一部分障碍。</p>
+<p>​        通过阅读本文，你可以了解到Nginx源码目录层级的安排，Nginx中实现的一些巧妙的数据结构，如何通过模块为Nginx扩展新的功能，以及如何单步调试Nginx源码。另外，本文编写内容均假定Nginx运行在linux系统上。</p>
+</blockquote>
+        
+          <a class="article-more-a" href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nginx</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">源码</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-jetson-nano-install-dolphin-emulator" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -469,7 +637,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 liminjun
+    		&copy; 2022 liminjun
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -550,6 +718,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">源码</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">其他</a>

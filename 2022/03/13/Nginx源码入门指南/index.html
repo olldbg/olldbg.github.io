@@ -6,14 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: 其他 | olldbg的博客</title>
+  <title>Nginx源码入门指南 | olldbg的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="olldbg的博客">
-<meta property="og:url" content="http://example.com/tags/%E5%85%B6%E4%BB%96/index.html">
+  <meta name="description" content="Nginx源码入门指南 引言： ​        Nginx作为我们常用的反向代理服务，其优秀的性能和扩展性获得了众多大厂的青睐，Nginx的源码在设计上有很多值得我们学习的地方，本文将介绍一些Nginx源码的一些基础概念，为读者阅读源码扫除一部分障碍。 ​        通过阅读本文，你可以了解到Nginx源码目录层级的安排，Nginx中实现的一些巧妙的数据结构，如何通过模块为Nginx扩展新的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx源码入门指南">
+<meta property="og:url" content="http://example.com/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/index.html">
 <meta property="og:site_name" content="olldbg的博客">
+<meta property="og:description" content="Nginx源码入门指南 引言： ​        Nginx作为我们常用的反向代理服务，其优秀的性能和扩展性获得了众多大厂的青睐，Nginx的源码在设计上有很多值得我们学习的地方，本文将介绍一些Nginx源码的一些基础概念，为读者阅读源码扫除一部分障碍。 ​        通过阅读本文，你可以了解到Nginx源码目录层级的安排，Nginx中实现的一些巧妙的数据结构，如何通过模块为Nginx扩展新的">
 <meta property="og:locale">
+<meta property="article:published_time" content="2022-03-13T06:45:54.000Z">
+<meta property="article:modified_time" content="2022-03-13T06:46:02.387Z">
 <meta property="article:author" content="liminjun">
+<meta property="article:tag" content="nginx">
+<meta property="article:tag" content="源码">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="olldbg的博客" type="application/atom+xml">
@@ -144,60 +150,368 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Nginx源码入门指南" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/10/09/hexo-blog-install/" class="archive-article-date">
-  	<time datetime="2021-10-09T13:10:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-09</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/10/09/hexo-blog-install/">hexo搭建github博客方法</a>
+    <h1 class="article-title" itemprop="name">
+      Nginx源码入门指南
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" class="archive-article-date">
+  	<time datetime="2022-03-13T06:45:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Nginx源码入门指南"><a href="#Nginx源码入门指南" class="headerlink" title="Nginx源码入门指南"></a>Nginx源码入门指南</h1><blockquote>
+<p>引言：</p>
+<p>​        Nginx作为我们常用的反向代理服务，其优秀的性能和扩展性获得了众多大厂的青睐，Nginx的源码在设计上有很多值得我们学习的地方，本文将介绍一些Nginx源码的一些基础概念，为读者阅读源码扫除一部分障碍。</p>
+<p>​        通过阅读本文，你可以了解到Nginx源码目录层级的安排，Nginx中实现的一些巧妙的数据结构，如何通过模块为Nginx扩展新的功能，以及如何单步调试Nginx源码。另外，本文编写内容均假定Nginx运行在linux系统上。</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="1-窥探Nginx源码结构"><a href="#1-窥探Nginx源码结构" class="headerlink" title="1 窥探Nginx源码结构"></a>1 窥探Nginx源码结构</h2><p>​        虽然Nginx的源码包很小，以nginx 1.12.5版本为例，在压缩的情况下只会占用1M左右的存储空间，但是完整阅读Nginx源码仍然是一个非常具有挑战性的工作，所以需要提前了解每个文件夹具体负责哪些功能，然后根据我们感兴趣的点进行选择性的阅读。</p>
+<p>以下简略地展示了nginx源码的目录结构:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">nginx-1.21.5</span><br><span class="line">├── ...</span><br><span class="line">├── conf</span><br><span class="line">│   ├── ...</span><br><span class="line">│   ├── nginx.conf</span><br><span class="line">│   ├── ...</span><br><span class="line">├── configure</span><br><span class="line">├── ...</span><br><span class="line">└── src</span><br><span class="line">    ├── core								# nginx日志，数据结构，线程池，锁，配置文件，模块加载实现等</span><br><span class="line">    │   ├── nginx.c</span><br><span class="line">    │   ├── ...</span><br><span class="line">    ├── event								# nginx事件循环，主要是select,poll,epoll等的封装</span><br><span class="line">    │   ├── modules</span><br><span class="line">    │   │   ├── ngx_devpoll_module.c</span><br><span class="line">    │   │   ├── ...</span><br><span class="line">    │   ├── ngx_event_accept.c</span><br><span class="line">    │   ├── ...</span><br><span class="line">    ├── http								# nginx http协议相关</span><br><span class="line">    │   ├── modules							# http协议的处理模块，这里属于nginx的官方模块，提供了非常多的实用功能</span><br><span class="line">    │   │   ├── ngx_http_access_module.c</span><br><span class="line">    │   │   ├── ...</span><br><span class="line">    │   ├── ngx_http.c</span><br><span class="line">    │   ├── ...</span><br><span class="line">    │   └── v2								# http2.0支持</span><br><span class="line">    │       ├── ngx_http_v2.c</span><br><span class="line">    │       ├── ...</span><br><span class="line">    ├── mail								# 邮件协议支持，imap和smtp等</span><br><span class="line">    │   ├── ngx_mail_auth_http_module.c</span><br><span class="line">    │   ├── ...</span><br><span class="line">    ├── misc</span><br><span class="line">    │   ├── ngx_cpp_test_module.cpp</span><br><span class="line">    │   └── ...</span><br><span class="line">    ├── os									# nginx系统调用相关封装</span><br><span class="line">    │   └── unix</span><br><span class="line">    │       ├── ngx_alloc.c</span><br><span class="line">    │       ├── ...</span><br><span class="line">    └── stream								# tcp代理相关</span><br><span class="line">        ├── ngx_stream_access_module.c</span><br><span class="line">        ├── ...</span><br><span class="line"></span><br><span class="line">37 directories, 403 files</span><br></pre></td></tr></table></figure>
+
+<p>​        这里推荐大家可以简单地阅读一下core/ngx_cycle.c、os/linux/ngx_process.c和os/linux/ngx_process_cycle.c这三个文件，主要负责nginx的进程管理，这里相当于是进程启动后的一条主线，可以帮助理解nginx的多进程模型。</p>
+<h2 id="2-Nginx数据结构一览"><a href="#2-Nginx数据结构一览" class="headerlink" title="2 Nginx数据结构一览"></a>2 Nginx数据结构一览</h2><p>​        数据结构是软件运行的基石，如果抛开数据结构直接去学习软件的逻辑和算法设计无疑是非常困难的，所以我们有必要先简单了解下nginx中一些常用的数据结构。</p>
+<h3 id="2-1-基础数据结构"><a href="#2-1-基础数据结构" class="headerlink" title="2.1 基础数据结构"></a>2.1 基础数据结构</h3><p>​        nginx支持linux，windows等多个平台，nginx源码为了支持多平台，对很多基础的数据结构都进行了封装，这里简单列举几个。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(1) ngx_int_t和ngx_uint_t: nginx中对整型和无符号整型的封装</span><br><span class="line">(2) ngx_str_t: nginx中对字符串类型的封装，相比C原生的以\0表示字符串结束的方式，ngx_str_t中增加len大小字段表示字符串长度</span><br><span class="line">(3) ngx_table_elt_t: nginx中存储key/value中的一种数据结构，ngx_table_elt_t是nginx为处理HTTP头“量身定制”的数据结构，其value同时保存了大小写敏感和纯小写的值，这样nginx处理HTTP请求时就可以更快地以忽略大小写的方式匹配HTTP头了</span><br><span class="line">(4) ngx_buf_t: nginx中处理缓冲区的数据结构，缓冲对象可以是内存或者磁盘上的文件</span><br><span class="line">(5) ngx_chain_t: ngx_chain_t与ngx_buf_t一起使用，ngx_chain_t通过单链表的方式将多个ngx_buf_t串起来</span><br><span class="line">(6) ngx_cycle_t: 包含nginx中的执行各个阶段的生命周期</span><br><span class="line">(7) ngx_event_t: 封装epoll等网络事件的封装</span><br><span class="line">(8) ngx_ssl_t:  nginx中对openssl的封装</span><br><span class="line">(9) ngx_atomic_t: 实现acs的自旋锁</span><br><span class="line">(10) ngx_thread_pool_t: nginx中对线程池的封装</span><br><span class="line">(11) ngx_time_t: nginx中对时间类型的封装</span><br><span class="line">(12) ngx_regex_t: nginx中对pcre正则表达式库的封装</span><br><span class="line">(13) ngx_sockaddr_t: nginx中对套接字的封装</span><br><span class="line">(14) ngx_flag_t: 通常用在配置文件的解析中，可以处理开关类型的配置</span><br><span class="line">(15) ngx_err_t: nginx中定义的错误码</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-容器数据结构"><a href="#2-2-容器数据结构" class="headerlink" title="2.2 容器数据结构"></a>2.2 容器数据结构</h3><p>​        我们在编写代码时免不了需要使用容器，nginx在实现常用容器数据结构的过程中，一方面贴合了实际的功能需求，另一方面着重考虑的节约内存和高性能，其对数据结构的定制非常值得我们学习。以下列举了几个在nginx源码中常出现的几个数据结构，并简单说明其特点。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(1) ngx_array_t: nginx中动态数组的实现，由于nginx使用纯C开发的，所以并不能直接使用C++ STL中的verctor容器，ngx_array_t可以在数组大小达到分配容量上限时自动扩容</span><br><span class="line">(2) ngx_hash_t: nginx中哈希表的实现，nginx中使用开放地址法解决哈希冲突，比较特殊的是这里的哈希表实现了前后带通配符的匹配，一些带通配符的url匹配使用的就是这个数据结构</span><br><span class="line">(3) ngx_list_t: nginx中链表的实现，这里的链表是由多个ngx_list_part_t链起来，而每个ngx_list_part_t又是一个数组，这样设计是为了在分配小块内存时可以通过数组的偏移量直接访问元素，相当于同时结合了数组和链表的优势</span><br><span class="line">(4) ngx_queue: nginx中一个基础顺序容器的实现，它以双向链表的方式将数据组织在一起，该容器实现了排序功能，并且支持两个链表之间的合并</span><br><span class="line">(5) ngx_rbtree_t: nginx中红黑树的实现，红黑树是一种自平衡的二叉树，在ngix的定时器管理和文件缓存模块均有使用</span><br><span class="line">(6) ngx_radix_tree_t: nginx中基数树的实现，相比红黑树要求key必须是32位的整数，但插入和删除速度要比红黑树快很多，在geo模块有使用</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-内存池和连接池"><a href="#2-3-内存池和连接池" class="headerlink" title="2.3 内存池和连接池"></a>2.3 内存池和连接池</h3><p>​        nginx中有两个内存池的实现，一个是位于core/ngx_palloc.h文件里定义的ngx_pool_t数据结构，另一个是位于core/ngx_slab.h文件里定义的ngx_slab_pool_t数据结构，它们之间的区别如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(1) ngx_pool_t：进程内的内存池，nginx中分配内存时基本上都是通过此数据结构，所以在nginx源码中被大量地使用</span><br><span class="line">(2) ngx_slab_pool_t：构建在共享内存之上的内存池，由于nginx使用的是master管理worker的多进程架构，多个worker进程之间有时候需要做数据上的交换（如在使用nginx的限流功能时，限流状态需要在多个worker进程之间共享）,nginx使用系统的共享内存机制解决多个进程之间的数据共享问题，另外带有zooe关键字的数据结构或者模块一般都和共享内存有关</span><br></pre></td></tr></table></figure>
+<p>​        除了内存池，nginx中为了提高性能，还有连接池ngx_connection_t，连接池内封装了每个连接的读写事件，该连接池主要使用在ngx_cycle_t结构体中，ngx_cycle_t中有connections和free_connections，分别代表当前正在使用的连接和空闲连接。</p>
+<h3 id="2-4-模块相关数据结构"><a href="#2-4-模块相关数据结构" class="headerlink" title="2.4 模块相关数据结构"></a>2.4 模块相关数据结构</h3><p>​        在学习nginx模块代码或者编写自定义模块时，经常会看到以下几个数据结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1) ngx_module_t: 这个数据结构定义了模块执行时的几个生命周期，通过传入回调函数的方式，可以执行模块内的自定义逻辑</span><br><span class="line">(2) ngx_command_t: 定义模块中使用的配置项</span><br><span class="line">(3) ngx_http_request_t: 在自定义http模块时，可以通过这个数据结构获取到http的request及发送response消息</span><br><span class="line">(4) ngx_conf_t: nginx中对配置文件的封装，在编写模块代码时，经常会用到该配置文件定义的内存池</span><br><span class="line">(5) ngx_log_t: 在编写模块时，可以直接从ngx_connection_t连接池中取到该数据结构对象，通过ngx_log_t可以直接调用nginx中写日志的功能</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-Nginx模块之旅"><a href="#3-Nginx模块之旅" class="headerlink" title="3 Nginx模块之旅"></a>3 Nginx模块之旅</h2><p>​        总的来说nginx的源码其实就是一个框架加上一堆模块实现的，模块化的设计无疑是nginx的一大亮点之一，其中nginx模块可分为官方模块和第三方模块，官方模块即随nginx源码一起发布的模块，而第三方模块通常需要用户额外下载，然后通过<code>--add-module</code>选项添加到nginx源码中编译的；下面将介绍一些常用的Nginx模块，在了解这些模块后，你一定会惊讶于nginx还能做这些事。</p>
+<h3 id="3-1-Nginx官方模块"><a href="#3-1-Nginx官方模块" class="headerlink" title="3.1 Nginx官方模块"></a>3.1 Nginx官方模块</h3><p>​        以下模块代码直接包含在nginx的源码中，默认编译配置下部分功能可能未开启，此时只需要通过<code>--with-XXX</code>选项开启即可使用。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_auth_basic_module.html">ngx_http_auth_basic_module</a></td>
+<td>该模块可以为代理服务增加简单的用户名和密码的验证</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_autoindex_module.html">ngx_http_autoindex_module</a></td>
+<td>使用该模块后可以获取到服务器上某个文件夹下的文件列表</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_geoip_module.html">ngx_http_geoip_module</a></td>
+<td>这个模块通过连接<code>MaxMind</code> 数据库获取ip的所在地</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_memcached_module.html">ngx_http_memcached_module</a></td>
+<td>可以通过调用http接口的方式操作memcached</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_secure_link_module.html">ngx_http_secure_link_module</a></td>
+<td>为nginx增加防盗链功能</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_realip_module.html">ngx_http_realip_module</a></td>
+<td>获取反向代理过程中客户端的真实ip</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_mp4_module.html">ngx_http_mp4_module</a></td>
+<td>提供mp4流媒体功能</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_access_module.html">ngx_http_access_module</a></td>
+<td>实现ip黑名单和白名单的功能</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_core_module.html">ngx_http_core_module</a></td>
+<td>处理http请求的核心模块</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_mirror_module.html">ngx_http_mirror_module</a></td>
+<td>http请求镜像，可以将生产环境的流量镜像一份到测试环境</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_rewrite_module.html">ngx_http_rewrite_module</a></td>
+<td>http url路径重写功能</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/stream/ngx_stream_core_module.html">ngx_stream_core_module</a></td>
+<td>处理tcp请求的核心模块</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>更多nginx官方模块可参考: <a target="_blank" rel="noopener" href="https://nginx.org/en/docs/">https://nginx.org/en/docs/</a></p>
+</blockquote>
+<p>​        nginx官方模块为处理http请求过程中增加了很多实用的功能，除此以外，nginx还可以处理邮件相关协议，也可以直接代理tcp协议请求，通过灵活使用这个功能可以减少很多我们日常的开发工作。</p>
+<h3 id="3-2-Nginx第三方模块"><a href="#3-2-Nginx第三方模块" class="headerlink" title="3.2 Nginx第三方模块"></a>3.2 Nginx第三方模块</h3><p>​        nginx除了官方模块，更是有很多优秀的第三方模块，很多优秀的开源项目诸如openresty和kong网关都是基于nginx的第三方模块扩展开发的。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/nginx-clojure/nginx-clojure">nginx-clojure/nginx-clojure</a></td>
+<td>让nginx可以内嵌java编程语言</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/openresty/lua-nginx-module">openresty/lua-nginx-module</a></td>
+<td>让nginx可以内嵌lua编程语言，基于该模块nginx可以直接实现简单的web接口</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/youzee/nginx-unzip-module">youzee/nginx-unzip-module</a></td>
+<td>该模块可以让nginx直接从zip压缩包中获取文件</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/arut/nginx-rtmp-module">arut/nginx-rtmp-module</a></td>
+<td>让nginx支持rtmp推流协议</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://people.freebsd.org/~osa/ngx_http_redis-0.3.8.tar.gz">ngx_http_redis</a></td>
+<td>可以通过http请求的方式操作redis</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/mdirolf/nginx-gridfs">mdirolf/nginx-gridfs</a></td>
+<td>可以让nginx直接访问mongodb的gridfs</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/evanmiller/mod_zip">evanmiller/mod_zip</a></td>
+<td>动态压缩文件</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/master.tar.gz">nginx-goodies/nginx-sticky-module-ng</a></td>
+<td>基于cookie实现的会话保持功能</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/openresty/echo-nginx-module">openresty/echo-nginx-module</a></td>
+<td>可以将nginx的变量直接通过http响应返回</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>更多nginx第三方模块可参考: <a target="_blank" rel="noopener" href="https://www.nginx.com/resources/wiki/modules/">https://www.nginx.com/resources/wiki/modules/</a></p>
+<p>nginx中lua的写法可参考: <a target="_blank" rel="noopener" href="https://github.com/openresty/lua-nginx-module#content_by_lua">https://github.com/openresty/lua-nginx-module#content_by_lua</a></p>
+</blockquote>
+<h3 id="3-3-Nginx模块源码分析"><a href="#3-3-Nginx模块源码分析" class="headerlink" title="3.3 Nginx模块源码分析"></a>3.3 Nginx模块源码分析</h3><p>​        本小结首先简单分析sticky会话保持模块的代码，然后引出如何编写自己的nginx模块。</p>
+<h4 id="3-3-1-sticky模块代码分析"><a href="#3-3-1-sticky模块代码分析" class="headerlink" title="3.3.1 sticky模块代码分析"></a>3.3.1 sticky模块代码分析</h4><p>​        sticky模块的主要作用是对请求进行会话保持，可以让同一个客户端的多次请求都连接到同一个上游服务，如果部署或调用过事业部内的AI+能力平台对该模块应该会有一定的了解。该模块属于nginx的第三方模块，在编译nginx时需要额外下载。</p>
+<blockquote>
+<p>sticky模块的源码下载地址: <a target="_blank" rel="noopener" href="https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/master.tar.gz">https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/master.tar.gz</a></p>
+<p>相比nginx官方源码而言，sticky模块的注释比较多，阅读起来会更加轻松一些，这也是这里选择sticky模块作为例子的原因</p>
+</blockquote>
+<p>​        以下梳理了sticky模块的主要流程图，方便后面对代码的学习：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">	A(请求) --&gt; B&#123;cookies中是否存在&#x27;route&#x27;?&#125;</span><br><span class="line">    B --&gt; |yes| C[从cookies中解析&#x27;route&#x27;]</span><br><span class="line">    C --&gt; D&#123;是否能找到和&#x27;route&#x27; cookie关联的上游服务?&#125;</span><br><span class="line">    B --&gt; |no| E[使用轮询算法查找查找上游服务器]</span><br><span class="line">    D --&gt; |no| E</span><br><span class="line">    D --&gt; H[尝试通过找到的上游服务处理请求]</span><br><span class="line">    H --&gt; I&#123;出错?&#125;</span><br><span class="line">    I --&gt; |yes| E</span><br><span class="line">    I --&gt; |no| G</span><br><span class="line">    E --&gt; F[向响应头中增加Set-Cookie: route=md5处理后的$upstream_addr]</span><br><span class="line">    F --&gt; G(响应)</span><br></pre></td></tr></table></figure>
+
+<p>​        sticky模块的源码非常简洁，核心处理逻辑就是以下几个函数:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//执行一些初始化工作</span></span><br><span class="line"><span class="function"><span class="keyword">ngx_int_t</span> <span class="title">ngx_http_init_upstream_sticky</span><span class="params">(<span class="keyword">ngx_conf_t</span> *cf, <span class="keyword">ngx_http_upstream_srv_conf_t</span> *us)</span></span></span><br><span class="line"><span class="function"><span class="comment">//解析cookies中的会话保持字段，并查找对应的上游服务</span></span></span><br><span class="line"><span class="function"><span class="keyword">ngx_int_t</span> <span class="title">ngx_http_init_sticky_peer</span><span class="params">(<span class="keyword">ngx_http_request_t</span> *r,	<span class="keyword">ngx_http_upstream_srv_conf_t</span> *us)</span></span>;</span><br><span class="line"><span class="comment">//获得一个可以使用的连接</span></span><br><span class="line"><span class="function"><span class="keyword">ngx_int_t</span> <span class="title">ngx_http_get_sticky_peer</span><span class="params">(<span class="keyword">ngx_peer_connection_t</span> *pc, <span class="keyword">void</span> *data)</span></span>;</span><br><span class="line"><span class="comment">//解析sticky模块的配置</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">ngx_http_sticky_set</span><span class="params">(<span class="keyword">ngx_conf_t</span> *cf, <span class="keyword">ngx_command_t</span> *cmd, <span class="keyword">void</span> *conf)</span></span>;</span><br><span class="line"><span class="comment">//创建sticky模块的配置</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">ngx_http_sticky_create_conf</span><span class="params">(<span class="keyword">ngx_conf_t</span> *cf)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-3-2-如何自定义Nginx模块"><a href="#3-3-2-如何自定义Nginx模块" class="headerlink" title="3.3.2 如何自定义Nginx模块"></a>3.3.2 如何自定义Nginx模块</h4><p>​        当我们需要一些功能，而nginx官方模块或第三方模块都没有提供时，就可以通过自定义模块实现了，编写一个nginx模块其实是非常简单的，比如上面的sticky模块源码中，实际有用的文件就只有4个。</p>
+<p>​        编写一个nginx的步骤如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flowchart LR</span><br><span class="line">	A[编写config文件] --&gt; B[通过ngx_command_t设置配置] --&gt; C[向ngx_module_t中注册回调函数] --&gt; D[实现回调函数中的业务逻辑]</span><br></pre></td></tr></table></figure>
+
+<p>config文件其实是一个shell脚本，sticky模块的config文件内容如下:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ngx_addon_name=ngx_http_sticky_module</span><br><span class="line">HTTP_MODULES=&quot;$HTTP_MODULES ngx_http_sticky_module&quot;</span><br><span class="line">NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_sticky_module.c $ngx_addon_dir/ngx_http_sticky_misc.c&quot;</span><br><span class="line">NGX_ADDON_DEPS=&quot;$NGX_ADDON_DEPS $ngx_addon_dir/ngx_http_sticky_misc.h&quot;</span><br><span class="line">USE_MD5=YES</span><br><span class="line">USE_SHA1=YES</span><br></pre></td></tr></table></figure>
+
+<p>如果只想开发一个HTTP模块，那么config文件中至少需要定义以下三个变量:</p>
+<ul>
+<li>ngx_addon_name: 仅在configure执行时使用，一般设置为模块名称</li>
+<li>HTTP_MODULES: 保持所有HTTP模块的名称，每个HTTP模块之间由空格符相连</li>
+<li>NGX_ADDON_SRCS: 用于指定新增模块的源代码，多个待编译的源代码之间用空格隔开</li>
+</ul>
+<p>除了HTTP_MODULES表示HTTP模块，还包含CORE_MODULES(核心模块)，EVENT_MODULES(事件模块)，HTTP_FILTER_MODULES(HTTP过滤模块)，HTTP_HEADERS_FILTER_MODULES(HTTP头部过滤模块)</p>
+<p>在编写完config文件后，需要在模块源码中设置ngx_command_t和ngx_module_t结构体，为理解ngx_command_t和ngx_module_t的使用方法，下面先列出了这几个结构体的定义:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ngx_command_s</span> &#123;</span></span><br><span class="line">    <span class="comment">//配置项名称</span></span><br><span class="line">    <span class="keyword">ngx_str_t</span>             name;</span><br><span class="line">    <span class="comment">//配置项可以出现的位置。例如，出现在server&#123;&#125;或location&#123;&#125;中，以及它可以携带参数的个数</span></span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            type;</span><br><span class="line">    <span class="comment">//出现了name中指定的配置项后，将会调用set方法处理配置项的参数</span></span><br><span class="line">    <span class="keyword">char</span>               *(*<span class="built_in">set</span>)(<span class="keyword">ngx_conf_t</span> *cf, <span class="keyword">ngx_command_t</span> *cmd, <span class="keyword">void</span> *conf);</span><br><span class="line">    <span class="comment">//在配置文件中的偏移量</span></span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            conf;</span><br><span class="line">    <span class="comment">//通常用于使用预设的解析方法解析配置项</span></span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            offset;</span><br><span class="line">    <span class="comment">//配置项读取后的处理方法</span></span><br><span class="line">    <span class="keyword">void</span>                 *post;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ngx_command_s</span>         <span class="title">ngx_command_t</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="comment">//解析配置文件前调用</span></span><br><span class="line">    <span class="keyword">ngx_int_t</span>   (*preconfiguration)(<span class="keyword">ngx_conf_t</span> *cf);</span><br><span class="line">    <span class="comment">//完成配置文件解析后调用</span></span><br><span class="line">    <span class="keyword">ngx_int_t</span>   (*postconfiguration)(<span class="keyword">ngx_conf_t</span> *cf);</span><br><span class="line">	<span class="comment">//当需要创建数据结构用于main级别(直属于http&#123;...&#125;块的配置项)的全局配置项时，可以通过create_main_conf回调方法存储全局配置项的结构体</span></span><br><span class="line">    <span class="keyword">void</span>       *(*create_main_conf)(<span class="keyword">ngx_conf_t</span> *cf);</span><br><span class="line">    <span class="comment">//常用于初始化main级别配置项</span></span><br><span class="line">    <span class="keyword">char</span>       *(*init_main_conf)(<span class="keyword">ngx_conf_t</span> *cf, <span class="keyword">void</span> *conf);</span><br><span class="line">	<span class="comment">//当需要创建数据结构用于srv级别(直属于server&#123;...&#125;块的配置项)的全局配置项时，可以通过create_srv_conf回调方法存储srv级别配置项的结构体</span></span><br><span class="line">    <span class="keyword">void</span>       *(*create_srv_conf)(<span class="keyword">ngx_conf_t</span> *cf);</span><br><span class="line">    <span class="comment">//merge_srv_conf回调函数主要用于合并main级别和srv级别下的同名配置项</span></span><br><span class="line">    <span class="keyword">char</span>       *(*merge_srv_conf)(<span class="keyword">ngx_conf_t</span> *cf, <span class="keyword">void</span> *prev, <span class="keyword">void</span> *conf);</span><br><span class="line">	<span class="comment">//当需要创建数据结构用于loc级别(直属于location&#123;...&#125;块的配置项)的全局配置项时，可以通过create_loc_conf回调方法存储loc级别配置项的结构体</span></span><br><span class="line">    <span class="keyword">void</span>       *(*create_loc_conf)(<span class="keyword">ngx_conf_t</span> *cf);</span><br><span class="line">    <span class="comment">//merge_loc_conf回调函数主要用于合并srv级别和loc级别下的同名配置项</span></span><br><span class="line">    <span class="keyword">char</span>       *(*merge_loc_conf)(<span class="keyword">ngx_conf_t</span> *cf, <span class="keyword">void</span> *prev, <span class="keyword">void</span> *conf);</span><br><span class="line">&#125; <span class="keyword">ngx_http_module_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NGX_MODULE_V1                                                         \</span></span><br><span class="line"><span class="meta">    NGX_MODULE_UNSET_INDEX, NGX_MODULE_UNSET_INDEX,                           \</span></span><br><span class="line"><span class="meta">    NULL, 0, 0, nginx_version, NGX_MODULE_SIGNATURE</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NGX_MODULE_V1_PADDING  0, 0, 0, 0, 0, 0, 0, 0</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ngx_module_s</span> &#123;</span></span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            ctx_index;</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            index;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span>                 *name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            spare0;</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            spare1;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            version;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>           *signature;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ctx用于指向一类模块的上下文结构体，在http模块中，ctx需要指向ngx_http_module_t结构体</span></span><br><span class="line">    <span class="keyword">void</span>                 *ctx;</span><br><span class="line">    <span class="comment">//上面定义的模块配置结构体</span></span><br><span class="line">    <span class="keyword">ngx_command_t</span>        *commands;</span><br><span class="line">    <span class="comment">//表示该模块的类型，它与ctx紧密相关，在官方nginx中，它的取值范围是以下5种: NGX_HTTP_MODULE、NGX_CORE_MODULE、NGX_CONF_MODULE、NGX_EVENT_MODULE、NGX_MAIL_MODULE</span></span><br><span class="line">    <span class="keyword">ngx_uint_t</span>            type;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//master进程启动时会回调init_master</span></span><br><span class="line">    <span class="keyword">ngx_int_t</span>           (*init_master)(<span class="keyword">ngx_log_t</span> *<span class="built_in">log</span>);</span><br><span class="line">	<span class="comment">//在初始化所有模块时会回调init_module，在启动worker进程前执行</span></span><br><span class="line">    <span class="keyword">ngx_int_t</span>           (*init_module)(<span class="keyword">ngx_cycle_t</span> *cycle);</span><br><span class="line">	<span class="comment">//在正常服务前调用，在每个worker进程初始化时会调用</span></span><br><span class="line">    <span class="keyword">ngx_int_t</span>           (*init_process)(<span class="keyword">ngx_cycle_t</span> *cycle);</span><br><span class="line">    <span class="comment">//保留，目前nginx暂不支持多线程模式，所以暂未使用</span></span><br><span class="line">    <span class="keyword">ngx_int_t</span>           (*init_thread)(<span class="keyword">ngx_cycle_t</span> *cycle);</span><br><span class="line">    <span class="comment">//同上</span></span><br><span class="line">    <span class="keyword">void</span>                (*exit_thread)(<span class="keyword">ngx_cycle_t</span> *cycle);</span><br><span class="line">    <span class="comment">//在服务停止前会调用，worker进程会在退出前调用它</span></span><br><span class="line">    <span class="keyword">void</span>                (*exit_process)(<span class="keyword">ngx_cycle_t</span> *cycle);</span><br><span class="line">	<span class="comment">//在master进程退出前会调用</span></span><br><span class="line">    <span class="keyword">void</span>                (*exit_master)(<span class="keyword">ngx_cycle_t</span> *cycle);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uintptr_t</span>             spare_hook0;</span><br><span class="line">    <span class="keyword">uintptr_t</span>             spare_hook1;</span><br><span class="line">    <span class="keyword">uintptr_t</span>             spare_hook2;</span><br><span class="line">    <span class="keyword">uintptr_t</span>             spare_hook3;</span><br><span class="line">    <span class="keyword">uintptr_t</span>             spare_hook4;</span><br><span class="line">    <span class="keyword">uintptr_t</span>             spare_hook5;</span><br><span class="line">    <span class="keyword">uintptr_t</span>             spare_hook6;</span><br><span class="line">    <span class="keyword">uintptr_t</span>             spare_hook7;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ngx_module_s</span>          <span class="title">ngx_module_t</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>以下为对应sticky模块中对这几个结构体的设置</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">ngx_command_t</span>  ngx_http_sticky_commands[] = &#123;</span><br><span class="line"></span><br><span class="line">	&#123; ngx_string(<span class="string">&quot;sticky&quot;</span>),</span><br><span class="line">		NGX_HTTP_UPS_CONF|NGX_CONF_ANY,</span><br><span class="line">		ngx_http_sticky_set,</span><br><span class="line">		<span class="number">0</span>,</span><br><span class="line">		<span class="number">0</span>,</span><br><span class="line">		<span class="literal">NULL</span> &#125;,</span><br><span class="line"></span><br><span class="line">	ngx_null_command</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">ngx_http_module_t</span>  ngx_http_sticky_module_ctx = &#123;</span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* preconfiguration */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* postconfiguration */</span></span><br><span class="line"></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* create main configuration */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* init main configuration */</span></span><br><span class="line"></span><br><span class="line">	ngx_http_sticky_create_conf,           <span class="comment">/* create server configuration */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* merge server configuration */</span></span><br><span class="line"></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* create location configuration */</span></span><br><span class="line">	<span class="literal">NULL</span>                                   <span class="comment">/* merge location configuration */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">ngx_module_t</span>  ngx_http_sticky_module = &#123;</span><br><span class="line">	NGX_MODULE_V1,</span><br><span class="line">	&amp;ngx_http_sticky_module_ctx, 		   <span class="comment">/* module context */</span></span><br><span class="line">	ngx_http_sticky_commands,   		   <span class="comment">/* module directives */</span></span><br><span class="line">	NGX_HTTP_MODULE,                       <span class="comment">/* module type */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* init master */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* init module */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* init process */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* init thread */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* exit thread */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* exit process */</span></span><br><span class="line">	<span class="literal">NULL</span>,                                  <span class="comment">/* exit master */</span></span><br><span class="line">	NGX_MODULE_V1_PADDING</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>通过在以上结构体中加入自己编写的回调函数，执行configure时使用<code>--add-module</code>选项指定模块的路径，即可将业务逻辑代码嵌入到nginx中执行了。</p>
+<h2 id="4-浅谈Nginx源码调试"><a href="#4-浅谈Nginx源码调试" class="headerlink" title="4 浅谈Nginx源码调试"></a>4 浅谈Nginx源码调试</h2><p>​        通常在学习开源组件的源码过程中，如果可以将程序运行并单步执行将会大大降低我们理解代码的难度，为此这里介绍通过<code>vscode</code>调试nginx的方法。</p>
+<p>(1) 首先我们需要基于源码编译出nginx的可执行文件，执行configure生成Makefile (nginx默认是依赖<code>openssl</code>，<code>pcre</code>和<code>zlib</code>这三个库的其中<code>openssl</code>用来支持https协议，<code>pcre</code>用于正则表达式匹配，<code>zlib</code>主要影响gzip压缩功能)。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">执行./configure --<span class="built_in">help</span>可以查询configure支持的所有选项</span></span><br><span class="line">./configure --prefix=`pwd`/dist --with-openssl=OpenSSL_1_1_1l --with-pcre=pcre-8.45 --with-zlib=zlib-1.2.11</span><br></pre></td></tr></table></figure>
+
+<p>(2) 修改<code>objs/Makefile</code>，对<code>CFLAGS</code>增加<code>-O0</code>和<code>-g</code>选项，其中<code>-O0</code>是禁用编译优化而<code>-g</code>是为编译的二进制文件增加debug信息，修改完成后执行make编译nginx可执行文件。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">CC =	cc</span><br><span class="line">CFLAGS =  -pipe  -O0 -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g </span><br><span class="line">CPP =	cc -E</span><br><span class="line">LINK =	<span class="variable">$(CC)</span></span><br><span class="line"></span><br><span class="line">ALL_INCS = -I src/core \</span><br><span class="line">	-I src/event \</span><br><span class="line">	-I src/event/modules \</span><br><span class="line">	-I src/os/unix \</span><br><span class="line">	-I pcre-8.45 \</span><br><span class="line">	-I zlib-1.2.11 \</span><br><span class="line">	-I objs \</span><br><span class="line">	-I src/http \</span><br><span class="line">	-I src/http/modules</span><br><span class="line">...略</span><br></pre></td></tr></table></figure>
+
+<p>(3) vscode安装C/C++插件。</p>
+<p>(4) vscode的调试器<code>launch.json</code>配置。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.2.0&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;(gdb) Launch&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;cppdbg&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;request&quot;</span>: <span class="string">&quot;launch&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;program&quot;</span>: <span class="string">&quot;$&#123;workspaceFolder&#125;/objs/nginx&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;args&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;stopAtEntry&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;workspaceFolder&#125;/dist/sbin&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;environment&quot;</span>: [],</span><br><span class="line">            <span class="attr">&quot;externalConsole&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">&quot;MIMode&quot;</span>: <span class="string">&quot;gdb&quot;</span>,</span><br><span class="line">            <span class="attr">&quot;setupCommands&quot;</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;Enable pretty-printing for gdb&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;-enable-pretty-printing&quot;</span>,</span><br><span class="line">                    <span class="attr">&quot;ignoreFailures&quot;</span>: <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(5) 修改nginx.conf配置文件，增加以下配置项，禁止nginx daemon模式和多进程模式。</p>
+  <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">daemon</span> <span class="literal">off</span>;</span><br><span class="line"><span class="attribute">master_process</span> <span class="literal">off</span>;</span><br></pre></td></tr></table></figure>
+
+<p>​        经过以上配置，通过nginx上的调试按钮启动后，就可以进行常用的调试操作了。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>​        在阅读过以上内容后，相信大家对nginx的源码已经有了一个比较基础的了解了，本文仅介绍了nginx源码的冰山一角，更多的内容需要大家自己去探索了，另外由于nginx的源码缺乏注释，建议学习时结合一些书籍，可以帮助更快的理解。</p>
+<p>​        由于编者自己水平也有限，以上如有错误的地方还烦请指正，感谢！</p>
+<blockquote>
+<p>参考资料:<br>nginx源码下载地址: <a target="_blank" rel="noopener" href="https://nginx.org/en/download.html">https://nginx.org/en/download.html</a><br>nginx官方模块: <a target="_blank" rel="noopener" href="https://nginx.org/en/docs/">https://nginx.org/en/docs/</a><br>nginx第三方模块: <a target="_blank" rel="noopener" href="https://www.nginx.com/resources/wiki/modules/">https://www.nginx.com/resources/wiki/modules/</a><br>nginx http核心模块: <a target="_blank" rel="noopener" href="https://nginx.org/en/docs/http/ngx_http_core_module.html">https://nginx.org/en/docs/http/ngx_http_core_module.html</a><br>书籍推荐: 《深入理解Nginx：模块开发与架构解析（第2版）》</p>
+</blockquote>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">其他</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nginx</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">源码</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Nginx使用总结
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2021/10/10/jetson-nano-install-dolphin-emulator/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">jetson nano安装dolphin模拟器</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -220,9 +534,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
