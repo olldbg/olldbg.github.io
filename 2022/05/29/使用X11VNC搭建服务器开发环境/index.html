@@ -6,15 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>olldbg的博客</title>
+  <title>使用X11VNC搭建服务器开发环境 | olldbg的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="olldbg的博客">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="使用X11VNC搭建服务器开发环境背景公司给配的电脑配置不行，没有固态硬盘，时间一长磁盘老化，读写速度捉急，用来搞开发实在难受。不过有几台公用的高配服务器，于是就想着薅点服务器的羊毛，毕竟服务器硬盘至少都是企业级别的金盘，读写速度还是相当有保障的。经过一段时间的摸索发现以下三种模式可以实现借用服务器进行远程开发：  在服务器上安装虚拟机 1234该方法主要测试了Virtualbox虚拟机软件，该方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用X11VNC搭建服务器开发环境">
+<meta property="og:url" content="http://example.com/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/index.html">
 <meta property="og:site_name" content="olldbg的博客">
+<meta property="og:description" content="使用X11VNC搭建服务器开发环境背景公司给配的电脑配置不行，没有固态硬盘，时间一长磁盘老化，读写速度捉急，用来搞开发实在难受。不过有几台公用的高配服务器，于是就想着薅点服务器的羊毛，毕竟服务器硬盘至少都是企业级别的金盘，读写速度还是相当有保障的。经过一段时间的摸索发现以下三种模式可以实现借用服务器进行远程开发：  在服务器上安装虚拟机 1234该方法主要测试了Virtualbox虚拟机软件，该方">
 <meta property="og:locale">
+<meta property="og:image" content="http://example.com/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/pic%5C1653807165(1).png">
+<meta property="og:image" content="http://example.com/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/pic%5C1653807888(1).png">
+<meta property="article:published_time" content="2022-05-29T13:49:13.000Z">
+<meta property="article:modified_time" content="2023-01-23T08:50:51.970Z">
 <meta property="article:author" content="liminjun">
+<meta property="article:tag" content="X11VNC">
+<meta property="article:tag" content="远程桌面">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/pic%5C1653807165(1).png">
   
     <link rel="alternative" href="/atom.xml" title="olldbg的博客" type="application/atom+xml">
   
@@ -144,16 +153,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-使用X11VNC搭建服务器开发环境" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-使用X11VNC搭建服务器开发环境" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">使用X11VNC搭建服务器开发环境</a>
+    <h1 class="article-title" itemprop="name">
+      使用X11VNC搭建服务器开发环境
     </h1>
   
 
@@ -175,11 +182,72 @@
 <li><p>通过X11VNC工具包，在服务器上启动完整的桌面环境</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">该方法基本上规避了x11协议投影的几个缺点，本地主机只需要安装一个vnc的客户端软件即可，即使断网也不影响服务器上运行的开发环境，另外对剪切板共享的支持也还不错。</span><br></pre></td></tr></table></figure></li>
 </ul>
-        
-          <a class="article-more-a" href="/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more">more >></a>
-        
+<span id="more"></span>
+
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>这里以centos7为例，其他linux发行版方法基本差不多</p>
+<p>安装centos扩展软件包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install epel-release -y</span><br></pre></td></tr></table></figure>
+
+<p>安装x11vnc工具包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install x11vnc -y</span><br></pre></td></tr></table></figure>
+
+<p>安装中文字体</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install wqy-microhei-fonts -y</span><br></pre></td></tr></table></figure>
+
+<p>安装xfce桌面环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum groupinstall xfce -y</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动远程桌面环境"><a href="#启动远程桌面环境" class="headerlink" title="启动远程桌面环境"></a>启动远程桌面环境</h2><p>在安装完上面的软件后，通过x11vnc命令就可以启动运程的x11的窗口管理器了，但该方法不能指定分辨率</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 一键启动，但不能指定分辨率</span></span><br><span class="line">sudo x11vnc -localhost -rfbport 5900 -passwd passwd -create</span><br></pre></td></tr></table></figure>
+
+<p>想要指定分辨率就需要将上面的命令拆成两条</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Xvfb命令用来创建一个虚拟的显示器，该命令需要在root用户下运行，其中:10类似于虚拟显示器的编号，和下面的命令需要对应起来</span></span><br><span class="line">nohup sudo /bin/Xvfb :10 -screen 0 1920x1080x24 -cc 4 -nolisten &amp;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 以下命令在上面启动的虚拟显示器上创建一个带vnc的x11服务窗口管理器，通过参数可以指定vnc协议的端口和密码，该命令可由非root用户执行</span></span><br><span class="line">nohup x11vnc -noxrecord -dontdisconnect -display :10 -shared -forever -rfbport 5900 -passwd passwd -bg &amp;</span><br></pre></td></tr></table></figure>
+
+<p>启动桌面环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 该命令可用非root用户执行</span></span><br><span class="line">DISPLAY=:10 nohup startxfce4 &amp;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用vnc客户端连接到远程开发环境"><a href="#使用vnc客户端连接到远程开发环境" class="headerlink" title="使用vnc客户端连接到远程开发环境"></a>使用vnc客户端连接到远程开发环境</h2><p>这里使用的是realvnc viewer，感觉比较好用，下载地址如下:</p>
+<p><a target="_blank" rel="noopener" href="https://www.realvnc.com/en/connect/download/viewer/">https://www.realvnc.com/en/connect/download/viewer/</a></p>
+<p>输入ip加端口后输入密码即可进入远程开发环境</p>
+<p><img src="pic%5C1653807165(1).png" alt="1653807165(1)"></p>
+<p>整体效果：</p>
+<p><img src="pic%5C1653807888(1).png" alt="1653807888(1)"></p>
+<h2 id="安装和设置输入法"><a href="#安装和设置输入法" class="headerlink" title="安装和设置输入法"></a>安装和设置输入法</h2><p>这里选择安装fcitx输入法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install fcitx fcitx-pinyin fcitx-configtool</span><br></pre></td></tr></table></figure>
+
+<p>设置环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GTK_IM_MODULE=fcitx</span><br><span class="line">export QT_IM_MODULE=fcitx</span><br><span class="line">export XMODIFIERS=@im=fcitx</span><br></pre></td></tr></table></figure>
+
+<p>切换到fcitx输入法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imsettings-switch fcitx</span><br></pre></td></tr></table></figure>
+
+<p>之后再通过fcitx-configtool中添加拼音输入法</p>
+<h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><p>在使用vnc远程桌面开发时，偶尔会出现大小写不能切换的问题，此时只需要本地环境打开一个浏览器，点击地址栏，按一下caps lock大小写键，然后返回vnc的远程环境即可切换大小写了</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，通过这次折腾提升了开发的效率，另外也减少远程调试的使用，毕竟使用远程调试还是比较麻烦的。</p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -203,16 +271,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Nginx使用总结</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -232,489 +359,14 @@
 
 
 
-
   
-    <article id="post-Nginx使用总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">Nginx使用总结</a>
-    </h1>
   
 
-        
-        <a href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2022-03-13T07:07:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Nginx使用总结"><a href="#Nginx使用总结" class="headerlink" title="Nginx使用总结"></a>Nginx使用总结</h1><blockquote>
-<p>本文着重介绍Nginx的使用方法，主要包含Nginx进程管理，常用配置和TCP内核参数优化等内容。</p>
-</blockquote>
-<h2 id="Nginx进程管理"><a href="#Nginx进程管理" class="headerlink" title="Nginx进程管理"></a>Nginx进程管理</h2><ul>
-<li><p>可以用向Nginx发送信号的方式管理Nginx进程</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload		#重新加载配置文件，对应信号HUP</span><br><span class="line">nginx -s reopen		#重新写日志，对应信号USR1</span><br><span class="line">nginx -s stop		#关闭nginx，对应信号TERM</span><br><span class="line">nginx -s quit		#优雅退出nginx，对应信号QUIT</span><br></pre></td></tr></table></figure></li>
-<li><p>配置文件热更新的流程(nginx -s reload)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx能实现配置文件热更新是具有其master和worker的多进程模型，其具体操作步骤如下:</span><br><span class="line">(1) 当用户输入nginx -s reload命令时，会先读取pid文件获取master进程的pid，然后对master进程发送HUP信号</span><br><span class="line">(2) master进程在收到HUP信号后，会启动新的worker进程，这些新启动的worker进程加载最新的配置文件，之后会向老的worker进程发送QUIT信号(优雅退出)</span><br><span class="line">(3) 在完成新老worker进程的更替后，nginx整体对外便实现了配置热加载的功能</span><br></pre></td></tr></table></figure></li>
-</ul>
-        
-          <a class="article-more-a" href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nginx</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Nginx源码入门指南" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/">Nginx源码入门指南</a>
-    </h1>
   
 
-        
-        <a href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/" class="archive-article-date">
-  	<time datetime="2022-03-13T06:45:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-03-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Nginx源码入门指南"><a href="#Nginx源码入门指南" class="headerlink" title="Nginx源码入门指南"></a>Nginx源码入门指南</h1><blockquote>
-<p>引言：</p>
-<p>​        Nginx作为我们常用的反向代理服务，其优秀的性能和扩展性获得了众多大厂的青睐，Nginx的源码在设计上有很多值得我们学习的地方，本文将介绍一些Nginx源码的一些基础概念，为读者阅读源码扫除一部分障碍。</p>
-<p>​        通过阅读本文，你可以了解到Nginx源码目录层级的安排，Nginx中实现的一些巧妙的数据结构，如何通过模块为Nginx扩展新的功能，以及如何单步调试Nginx源码。另外，本文编写内容均假定Nginx运行在linux系统上。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">nginx</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-jetson-nano-install-dolphin-emulator" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/10/jetson-nano-install-dolphin-emulator/">jetson nano安装dolphin模拟器</a>
-    </h1>
   
 
-        
-        <a href="/2021/10/10/jetson-nano-install-dolphin-emulator/" class="archive-article-date">
-  	<time datetime="2021-10-10T14:42:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="名词介绍"><a href="#名词介绍" class="headerlink" title="名词介绍"></a>名词介绍</h1><p>jetson nano是Nvidia发布的一款低端arm开发板，相比树莓派自带显卡支持cuda通用计算，图形性能有了质的提升，官方操作系统基于ubuntu 18.04。</p>
-<p>dolphin模拟器是一款开源游戏模拟器，可以模拟并游玩老任的wii游戏。</p>
-        
-          <a class="article-more-a" href="/2021/10/10/jetson-nano-install-dolphin-emulator/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">jetson nano</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">dolphin emulator</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/10/jetson-nano-install-dolphin-emulator/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-io-model" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/09/io-model/">BIO、NIO、AIO 区别</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/09/io-model/" class="archive-article-date">
-  	<time datetime="2021-10-09T14:49:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1、IO介绍"><a href="#1、IO介绍" class="headerlink" title="1、IO介绍"></a>1、IO介绍</h1><p>我们通常说BIO是相对于NIO而言的。 BIO是Java初期引入的IO操作模块。 BIO是BlockingIO的缩写。 顾名思义，就是阻塞IO。 AIO是NIO的升级版，提供异步非阻塞IO操作模式。</p>
-<h2 id="1-1-BIO、NIO、AIO的区别"><a href="#1-1-BIO、NIO、AIO的区别" class="headerlink" title="1.1 BIO、NIO、AIO的区别"></a>1.1 BIO、NIO、AIO的区别</h2><p>BIO 是传统的 java.io 包，它基于流模型，以同步和阻塞方式交互。 也就是说，当读入输入流或输出流时，线程会被阻塞在那里，直到读写动作完成，它们之间的调用是可靠的线性顺序。 它的优点是代码比较简单直观； 缺点是IO效率和可扩展性很低，容易成为应用性能瓶颈。</p>
-<p>NIO是在Java 1.4 java.nio Package中引入的，它提供了Channel、Selector、Buffer等新的抽象，可以构建多路同步的非阻塞IO程序，提供更贴近底层操作系统的高性能数据操作模式.</p>
-<p>AIO 是 Java 1.7 之后引入的一个包。 它是NIO的升级版。 它提供了异步和非阻塞的IO操作模式，所以人们称之为AIO（异步IO），异步IO是基于事件和回调机制的，即应用操作后直接返回，不会被阻塞在那里. 当后台处理完成后，操作系统会通知相应的线程进行后续操作。</p>
-        
-          <a class="article-more-a" href="/2021/10/09/io-model/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Netty</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/09/io-model/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hexo-blog-install" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/09/hexo-blog-install/">hexo搭建github博客方法</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/09/hexo-blog-install/" class="archive-article-date">
-  	<time datetime="2021-10-09T13:10:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>参见：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html">https://www.cnblogs.com/liuxianan/p/build-blog-website-by-hexo-github.html</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26625249">https://zhuanlan.zhihu.com/p/26625249</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">其他</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/09/hexo-blog-install/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/09/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2021/10/09/hello-world/" class="archive-article-date">
-  	<time datetime="2021-10-09T12:53:42.443Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/10/09/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -737,8 +389,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
