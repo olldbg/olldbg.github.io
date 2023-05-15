@@ -300,6 +300,59 @@
                 
 
                 <h3 class="home-article-title">
+                    <a href="/2023/05/15/Springboot%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA/">
+                        SpringBoot优雅停机
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>在生产环境中，当我们需要升级或者停止服务的时候，应该希望当前服务能够服务完所有请求后再停止，从而达成优雅停机</p>
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Mon May 15 2023 10:35:39 GMT+0800">
+                
+                    2023-05-15
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/Java/">Java</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/SpringBoot/">SpringBoot</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/05/15/Springboot%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA/">Read more<span class="seo-reader-text">SpringBoot优雅停机</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                <h3 class="home-article-title">
                     <a href="/2023/01/24/Java%E9%9B%86%E6%88%90%E5%90%84%E7%A7%8D%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80/">
                         Java集成各种脚本语言
                     </a>
@@ -307,9 +360,9 @@
 
                 <div class="home-article-content markdown-body">
                     
-                        <h1 id="Java集成各种脚本语言"><a href="#Java集成各种脚本语言" class="headerlink" title="Java集成各种脚本语言"></a>Java集成各种脚本语言</h1><p>过年放假终于有空写博客了，今年给自己定的目标是要多写博客，先从一些平时开发中遇到的问题总结开始，也方便后面查询</p>
-<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>​        当在开发一些需要频繁对接第三方接口或是需要频繁修改业务逻辑的功能时，为了保证业务代码的扩展性，可以选择集成一种脚本语言实现。</p>
-<p>​        以下探索了Java语言集成Groovy脚本，Shell脚本，Javascript脚本，Lua脚本和Python脚本的方法，并且进行了一些简单的性能对比。</p>
+                        <p>过年放假终于有空写博客了，今年给自己定的目标是要多写博客，先从一些平时开发中遇到的问题总结开始，也方便后面查询</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>​		当在开发一些需要频繁对接第三方接口或是需要频繁修改业务逻辑的功能时，为了保证业务代码的扩展性，可以选择集成一种脚本语言实现。</p>
+<p>​		以下探索了Java语言集成Groovy脚本，Shell脚本，Javascript脚本，Lua脚本和Python脚本的方法，并且进行了一些简单的性能对比。</p>
                     
                 </div>
 
@@ -362,12 +415,14 @@
 
                 <div class="home-article-content markdown-body">
                     
-                        <h1 id="使用X11VNC搭建服务器开发环境"><a href="#使用X11VNC搭建服务器开发环境" class="headerlink" title="使用X11VNC搭建服务器开发环境"></a>使用X11VNC搭建服务器开发环境</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>公司给配的电脑配置不行，没有固态硬盘，时间一长磁盘老化，读写速度捉急，用来搞开发实在难受。不过有几台公用的高配服务器，于是就想着薅点服务器的羊毛，毕竟服务器硬盘至少都是企业级别的金盘，读写速度还是相当有保障的。经过一段时间的摸索发现以下三种模式可以实现借用服务器进行远程开发：</p>
+                        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>公司给配的电脑配置不行，没有固态硬盘，时间一长磁盘老化，读写速度捉急，用来搞开发实在难受。不过有几台公用的高配服务器，于是就想着薅点服务器的羊毛，毕竟服务器硬盘至少都是企业级别的金盘，读写速度还是相当有保障的。经过一段时间的摸索发现以下三种模式可以实现借用服务器进行远程开发：</p>
 <ul>
 <li><p>在服务器上安装虚拟机</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">该方法主要测试了Virtualbox虚拟机软件，该方法的优点是可以安装windows系统，同时稳定性和管理也比较方便，支持系统快照，可随时弄一个全新的centos环境；通过Virtualbox自带的rdp服务端，可以很方便地连接到虚拟机。</span><br><span class="line">但该方法有两个缺点:</span><br><span class="line">一个是虚拟机绑定的是一个虚拟网卡，当需要连接测试开发的服务时还需要设置端口映射。</span><br><span class="line">另一个是虚拟机的虚拟磁盘文件通常是只增不减的，即使内部的文件已经删除了，还是会占用服务器的磁盘空间，手动缩减虚拟磁盘文件大小通常比较麻烦。</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">该方法主要测试了Virtualbox虚拟机软件，该方法的优点是可以安装windows系统，同时稳定性和管理也比较方便，支持系统快照，可随时弄一个全新的centos环境；通过Virtualbox自带的rdp服务端，可以很方便地连接到虚拟机。</span><br><span class="line">但该方法有两个缺点:</span><br><span class="line">一个是虚拟机绑定的是一个虚拟网卡，当需要连接测试开发的服务时还需要设置端口映射。</span><br><span class="line">另一个是虚拟机的虚拟磁盘文件通常是只增不减的，即使内部的文件已经删除了，还是会占用服务器的磁盘空间，手动缩减虚拟磁盘文件大小通常比较麻烦。</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>本地安装Xming软件，将服务器上的gui通过x11协议投影到本地主机</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">该方法是比较轻量化的一种方式，实际测试下来，只要本地主机不断网，基本上可以稳定运行，但该方法有一个致命缺点，就是和本地主机上的中文输入法不是很兼容，每次敲代码前还得切换本地主机的输入法到英文，另外在投影过来的远程应用中输入中文也比较困难，另外对剪切板的共享支持也存在问题，实际开发体验并不好。</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">该方法是比较轻量化的一种方式，实际测试下来，只要本地主机不断网，基本上可以稳定运行，但该方法有一个致命缺点，就是和本地主机上的中文输入法不是很兼容，每次敲代码前还得切换本地主机的输入法到英文，另外在投影过来的远程应用中输入中文也比较困难，另外对剪切板的共享支持也存在问题，实际开发体验并不好。</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>通过X11VNC工具包，在服务器上启动完整的桌面环境</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">该方法基本上规避了x11协议投影的几个缺点，本地主机只需要安装一个vnc的客户端软件即可，即使断网也不影响服务器上运行的开发环境，另外对剪切板共享的支持也还不错。</span><br></pre></td></tr></table></figure></li>
 </ul>
@@ -423,12 +478,13 @@
 
                 <div class="home-article-content markdown-body">
                     
-                        <h1 id="Nginx使用总结"><a href="#Nginx使用总结" class="headerlink" title="Nginx使用总结"></a>Nginx使用总结</h1><blockquote>
+                        <blockquote>
 <p>本文着重介绍Nginx的使用方法，主要包含Nginx进程管理，常用配置和TCP内核参数优化等内容。</p>
 </blockquote>
 <h2 id="Nginx进程管理"><a href="#Nginx进程管理" class="headerlink" title="Nginx进程管理"></a>Nginx进程管理</h2><ul>
 <li><p>可以用向Nginx发送信号的方式管理Nginx进程</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload		#重新加载配置文件，对应信号HUP</span><br><span class="line">nginx -s reopen		#重新写日志，对应信号USR1</span><br><span class="line">nginx -s stop		#关闭nginx，对应信号TERM</span><br><span class="line">nginx -s quit		#优雅退出nginx，对应信号QUIT</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload		#重新加载配置文件，对应信号HUP</span><br><span class="line">nginx -s reopen		#重新写日志，对应信号USR1</span><br><span class="line">nginx -s stop		#关闭nginx，对应信号TERM</span><br><span class="line">nginx -s quit		#优雅退出nginx，对应信号QUIT</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>配置文件热更新的流程(nginx -s reload)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx能实现配置文件热更新是具有其master和worker的多进程模型，其具体操作步骤如下:</span><br><span class="line">(1) 当用户输入nginx -s reload命令时，会先读取pid文件获取master进程的pid，然后对master进程发送HUP信号</span><br><span class="line">(2) master进程在收到HUP信号后，会启动新的worker进程，这些新启动的worker进程加载最新的配置文件，之后会向老的worker进程发送QUIT信号(优雅退出)</span><br><span class="line">(3) 在完成新老worker进程的更替后，nginx整体对外便实现了配置热加载的功能</span><br></pre></td></tr></table></figure></li>
 </ul>
@@ -479,10 +535,10 @@
 
                 <div class="home-article-content markdown-body">
                     
-                        <h1 id="Nginx源码入门指南"><a href="#Nginx源码入门指南" class="headerlink" title="Nginx源码入门指南"></a>Nginx源码入门指南</h1><blockquote>
+                        <blockquote>
 <p>引言：</p>
-<p>​        Nginx作为我们常用的反向代理服务，其优秀的性能和扩展性获得了众多大厂的青睐，Nginx的源码在设计上有很多值得我们学习的地方，本文将介绍一些Nginx源码的一些基础概念，为读者阅读源码扫除一部分障碍。</p>
-<p>​        通过阅读本文，你可以了解到Nginx源码目录层级的安排，Nginx中实现的一些巧妙的数据结构，如何通过模块为Nginx扩展新的功能，以及如何单步调试Nginx源码。另外，本文编写内容均假定Nginx运行在linux系统上。</p>
+<p>​		Nginx作为我们常用的反向代理服务，其优秀的性能和扩展性获得了众多大厂的青睐，Nginx的源码在设计上有很多值得我们学习的地方，本文将介绍一些Nginx源码的一些基础概念，为读者阅读源码扫除一部分障碍。</p>
+<p>​		通过阅读本文，你可以了解到Nginx源码目录层级的安排，Nginx中实现的一些巧妙的数据结构，如何通过模块为Nginx扩展新的功能，以及如何单步调试Nginx源码。另外，本文编写内容均假定Nginx运行在linux系统上。</p>
 </blockquote>
                     
                 </div>

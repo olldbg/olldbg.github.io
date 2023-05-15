@@ -13,17 +13,23 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/archives/2022/05/"/>
+    <link rel="canonical" href="http://example.com/2023/05/15/springboot优雅停机/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta property="og:type" content="website">
-<meta property="og:title" content="olldbg的博客">
-<meta property="og:url" content="http://example.com/archives/2022/05/index.html">
+        <meta name="description" content="说明在生产环境中，当我们需要升级或者停止服务的时候，应该希望当前服务能够服务完所有请求后再停止，从而达成优雅停机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot优雅停机">
+<meta property="og:url" content="http://example.com/2023/05/15/Springboot%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA/index.html">
 <meta property="og:site_name" content="olldbg的博客">
+<meta property="og:description" content="说明在生产环境中，当我们需要升级或者停止服务的时候，应该希望当前服务能够服务完所有请求后再停止，从而达成优雅停机">
 <meta property="og:locale">
+<meta property="article:published_time" content="2023-05-15T02:35:39.000Z">
+<meta property="article:modified_time" content="2023-05-15T07:23:58.906Z">
 <meta property="article:author" content="liminjun">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="SpringBoot">
 <meta name="twitter:card" content="summary">
     
     
@@ -36,7 +42,7 @@
     
     <title>
         
-            Archive: 2022/5 -
+            SpringBoot优雅停机 -
         
         olldbg的个人博客
     </title>
@@ -153,7 +159,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active" 
+                                <a class="" 
                                     href="/archives"  >
                                     
                                         
@@ -240,7 +246,7 @@
             
                 
                     <li class="drawer-navbar-item flex-center">
-                        <a class="active" 
+                        <a class="" 
                         href="/archives"  >
                              
                                 
@@ -293,86 +299,187 @@
 
                 
                     <div class="fade-in-down-animation">
-    <div class="archive-container ">
-        
-<div class="archive-list-container">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            
+            
+                <div class="article-title">
+                    <h1 class="article-title-regular">SpringBoot优雅停机</h1>
+                </div>
+            
+                
+            
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/redefine-avatar.svg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">liminjun</span>
+                            
+                                <span class="author-label"></span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-05-15 10:35:39</span>
+        <span class="mobile">2023-05-15 10:35</span>
+        <span class="hover-info">Created</span>
+    </span>
     
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[2]</span>
-            </div>
-            <ul class="article-list">
-              
-              <li class="article-item" date-is='05-15'>
-                <a href="/2023/05/15/Springboot%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA/">
-                  <span class="article-title">SpringBoot优雅停机</span>
-                </a>
-              </li>
-              
-              <li class="article-item" date-is='01-24'>
-                <a href="/2023/01/24/Java%E9%9B%86%E6%88%90%E5%90%84%E7%A7%8D%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80/">
-                  <span class="article-title">Java集成各种脚本语言</span>
-                </a>
-              </li>
-              
-            </ul>
-        </section>
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-05-15 15:23:58</span>
+            <span class="mobile">2023-05-15 15:23</span>
+            <span class="hover-info">Updated</span>
+        </span>
     
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2022</span>
-                <span class="archive-year-post-count">[3]</span>
-            </div>
-            <ul class="article-list">
-              
-              <li class="article-item" date-is='05-29'>
-                <a href="/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
-                  <span class="article-title">使用X11VNC搭建服务器开发环境</span>
-                </a>
-              </li>
-              
-              <li class="article-item" date-is='03-13'>
-                <a href="/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
-                  <span class="article-title">Nginx使用总结</span>
-                </a>
-              </li>
-              
-              <li class="article-item" date-is='03-13'>
-                <a href="/2022/03/13/Nginx%E6%BA%90%E7%A0%81%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97/">
-                  <span class="article-title">Nginx源码入门指南</span>
-                </a>
-              </li>
-              
-            </ul>
-        </section>
+
     
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2021</span>
-                <span class="archive-year-post-count">[2]</span>
-            </div>
-            <ul class="article-list">
-              
-              <li class="article-item" date-is='10-10'>
-                <a href="/2021/10/10/jetson-nano-install-dolphin-emulator/">
-                  <span class="article-title">jetson nano安装dolphin模拟器</span>
-                </a>
-              </li>
-              
-              <li class="article-item" date-is='10-09'>
-                <a href="/2021/10/09/io-model/">
-                  <span class="article-title">BIO、NIO、AIO 区别</span>
-                </a>
-              </li>
-              
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Java/">Java</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/SpringBoot/">SpringBoot</a>&nbsp;
+                    </li>
+                
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
     
 </div>
 
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>在生产环境中，当我们需要升级或者停止服务的时候，应该希望当前服务能够服务完所有请求后再停止，从而达成优雅停机</p>
+<span id="more"></span>
+
+<h2 id="SpringBoot如何实现优雅停机"><a href="#SpringBoot如何实现优雅停机" class="headerlink" title="SpringBoot如何实现优雅停机"></a>SpringBoot如何实现优雅停机</h2><p>默认SpringBoot的优雅停机功能是关闭的，需要通过配置项打开</p>
+<div class="highlight-container" data-rel="Properties"><figure class="iseeu highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#server.shutdown=immediate</span></span><br><span class="line"><span class="attr">server.shutdown</span>=<span class="string">graceful</span></span><br></pre></td></tr></table></figure></div>
+
+<p>该配置项默认为<code>immediate</code>，即收到停止信号时，直接关闭服务，没有服务完的请求也直接放弃，这样会导致客户端出现报错</p>
+<p>当将此配置改为<code>graceful</code>后，应用在收到停止信号时，会先服务完当前的请求后再关闭服务</p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>编写一个测试Controller</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">test</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">20</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>通过curl命令模拟请求应用，正常会睡眠20秒</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://127.0.0.1:9090/test</span><br></pre></td></tr></table></figure></div>
+
+<p>在20秒内，给应用发送<code>SEGTERM</code>信号，应用不会立马结束，会等本次请求服务完再停止，客户端curl也收到响应体test字符串，优雅停机成功</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>这里主要是spring框架利用的jvm的<code>ShutdownHook</code>功能，注册一个<code>ShutdownHook</code>的方法如下</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Runtime.getRuntime().addShutdownHook(<span class="keyword">new</span> <span class="title class_">Thread</span>(()-&gt;&#123;</span><br><span class="line">    log.info(<span class="string">&quot;jvm pre destroy&quot;</span>);</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure></div>
+
+<p>当注册上述关闭钩子后，jvm在收到停止信号时，就会调用一段自定义处理逻辑</p>
+<p>spring框架内有一个是否注册关闭钩子的配置项</p>
+<div class="highlight-container" data-rel="Properties"><figure class="iseeu highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.main.register-shutdown-hook</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure></div>
+
+<p>此配置项默认打开，如关闭此配置项，则上述所说的优雅关闭功能也会失效</p>
+<p>此外，注解<code>@PreDestroy</code>的实现，也是基于上述原理</p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>当应用接收到<code>SEGTERM</code>信号后，则不再提供服务，新的请求将会直接被拒绝，所以真正实现优雅，最好可以配合注册中心的线下功能，让新的流量在执行优雅停机之前就不再打到该应用上了</p>
+<p>另外，当应用收到的是强杀指令<code>kill -9</code>，即<code>SEGKILL</code>信号时，操作系统会直接干掉jvm，不给jvm任何狡辩的机会，即使开启上述配置也无法做到优雅停机</p>
+
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> SpringBoot优雅停机</li>
+        <li><strong>Author:</strong> liminjun</li>
+        <li><strong>Created at:</strong> 2023-05-15 10:35:39</li>
+        
+            <li>
+                <strong>Updated at:</strong> 2023-05-15 15:23:58
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://olldbg.github.io/2023/05/15/Springboot优雅停机/
+        </li>
+        <li>
+            <strong>License:</strong> This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/Java/">#Java</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/SpringBoot/">#SpringBoot</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/01/24/Java%E9%9B%86%E6%88%90%E5%90%84%E7%A7%8D%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">Java集成各种脚本语言</span>
+                                    <span class="post-nav-item">Next posts</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">SpringBoot优雅停机</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA"><span class="nav-text">SpringBoot如何实现优雅停机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C"><span class="nav-text">实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-text">补充</span></a></li></ol>
+
     </div>
 </div>
+            </div>
+        
+    </div>
+</div>
+
 
                 
 
@@ -434,6 +541,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
@@ -546,6 +670,16 @@
 
 
 <div class="post-scripts pjax">
+    
+        
+<script src="/js/tools/tocToggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
+
     
 </div>
 

@@ -18,15 +18,15 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Nginx使用总结 本文着重介绍Nginx的使用方法，主要包含Nginx进程管理，常用配置和TCP内核参数优化等内容。  Nginx进程管理 可以用向Nginx发送信号的方式管理Nginx进程 1234nginx -s reload		#重新加载配置文件，对应信号HUPnginx -s reopen		#重新写日志，对应信号USR1nginx -s stop		#关闭nginx，对应信号TERMn">
+        <meta name="description" content="本文着重介绍Nginx的使用方法，主要包含Nginx进程管理，常用配置和TCP内核参数优化等内容。  Nginx进程管理 可以用向Nginx发送信号的方式管理Nginx进程 1234nginx -s reload		#重新加载配置文件，对应信号HUPnginx -s reopen		#重新写日志，对应信号USR1nginx -s stop		#关闭nginx，对应信号TERMnginx -s q">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx使用总结">
 <meta property="og:url" content="http://example.com/2022/03/13/Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="olldbg的博客">
-<meta property="og:description" content="Nginx使用总结 本文着重介绍Nginx的使用方法，主要包含Nginx进程管理，常用配置和TCP内核参数优化等内容。  Nginx进程管理 可以用向Nginx发送信号的方式管理Nginx进程 1234nginx -s reload		#重新加载配置文件，对应信号HUPnginx -s reopen		#重新写日志，对应信号USR1nginx -s stop		#关闭nginx，对应信号TERMn">
+<meta property="og:description" content="本文着重介绍Nginx的使用方法，主要包含Nginx进程管理，常用配置和TCP内核参数优化等内容。  Nginx进程管理 可以用向Nginx发送信号的方式管理Nginx进程 1234nginx -s reload		#重新加载配置文件，对应信号HUPnginx -s reopen		#重新写日志，对应信号USR1nginx -s stop		#关闭nginx，对应信号TERMnginx -s q">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-03-13T07:07:10.000Z">
-<meta property="article:modified_time" content="2022-03-13T07:07:10.765Z">
+<meta property="article:modified_time" content="2023-05-15T02:38:23.257Z">
 <meta property="article:author" content="liminjun">
 <meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
@@ -333,8 +333,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2022-03-13 15:07:10</span>
-            <span class="mobile">2022-03-13 15:07</span>
+            <span class="desktop">2023-05-15 10:38:23</span>
+            <span class="mobile">2023-05-15 10:38</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -365,14 +365,15 @@
             
 
             <div class="article-content markdown-body">
-                <h1 id="Nginx使用总结"><a href="#Nginx使用总结" class="headerlink" title="Nginx使用总结"></a>Nginx使用总结</h1><blockquote>
+                <blockquote>
 <p>本文着重介绍Nginx的使用方法，主要包含Nginx进程管理，常用配置和TCP内核参数优化等内容。</p>
 </blockquote>
 <h2 id="Nginx进程管理"><a href="#Nginx进程管理" class="headerlink" title="Nginx进程管理"></a>Nginx进程管理</h2><ul>
 <li><p>可以用向Nginx发送信号的方式管理Nginx进程</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload		#重新加载配置文件，对应信号HUP</span><br><span class="line">nginx -s reopen		#重新写日志，对应信号USR1</span><br><span class="line">nginx -s stop		#关闭nginx，对应信号TERM</span><br><span class="line">nginx -s quit		#优雅退出nginx，对应信号QUIT</span><br></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload		#重新加载配置文件，对应信号HUP</span><br><span class="line">nginx -s reopen		#重新写日志，对应信号USR1</span><br><span class="line">nginx -s stop		#关闭nginx，对应信号TERM</span><br><span class="line">nginx -s quit		#优雅退出nginx，对应信号QUIT</span><br></pre></td></tr></table></figure></div>
+</li>
 <li><p>配置文件热更新的流程(nginx -s reload)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx能实现配置文件热更新是具有其master和worker的多进程模型，其具体操作步骤如下:</span><br><span class="line">(1) 当用户输入nginx -s reload命令时，会先读取pid文件获取master进程的pid，然后对master进程发送HUP信号</span><br><span class="line">(2) master进程在收到HUP信号后，会启动新的worker进程，这些新启动的worker进程加载最新的配置文件，之后会向老的worker进程发送QUIT信号(优雅退出)</span><br><span class="line">(3) 在完成新老worker进程的更替后，nginx整体对外便实现了配置热加载的功能</span><br></pre></td></tr></table></figure></li>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx能实现配置文件热更新是具有其master和worker的多进程模型，其具体操作步骤如下:</span><br><span class="line">(1) 当用户输入nginx -s reload命令时，会先读取pid文件获取master进程的pid，然后对master进程发送HUP信号</span><br><span class="line">(2) master进程在收到HUP信号后，会启动新的worker进程，这些新启动的worker进程加载最新的配置文件，之后会向老的worker进程发送QUIT信号(优雅退出)</span><br><span class="line">(3) 在完成新老worker进程的更替后，nginx整体对外便实现了配置热加载的功能</span><br></pre></td></tr></table></figure></div></li>
 </ul>
 <span id="more"></span>
 
@@ -398,12 +399,12 @@
 <td>master_process</td>
 <td>on|off</td>
 <td>master_process on;</td>
-<td>是否以master/worker方式工作</td>
+<td>是否以master&#x2F;worker方式工作</td>
 </tr>
 <tr>
 <td>error_log</td>
-<td>/path/file level</td>
-<td>error_log logs/error.log error;</td>
+<td>&#x2F;path&#x2F;file level</td>
+<td>error_log logs&#x2F;error.log error;</td>
 <td>error日志的设置</td>
 </tr>
 <tr>
@@ -431,7 +432,7 @@
 <td>worker进程的工作目录</td>
 </tr>
 </tbody></table>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">debug_connection</span></span><br><span class="line">这个配置项属于事件类配置，它必须放到events &#123;...&#125;中才能生效</span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">	<span class="attribute">debug_connection</span> <span class="number">10.224.66.14</span>;</span><br><span class="line">	<span class="attribute">debug_connection</span> <span class="number">10.224.57.0</span>/<span class="number">24</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Nginx"><figure class="iseeu highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">debug_connection</span></span><br><span class="line">这个配置项属于事件类配置，它必须放到events &#123;...&#125;中才能生效</span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">	<span class="attribute">debug_connection</span> <span class="number">10.224.66.14</span>;</span><br><span class="line">	<span class="attribute">debug_connection</span> <span class="number">10.224.57.0</span>/<span class="number">24</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 
 <ul>
@@ -448,20 +449,20 @@
 </thead>
 <tbody><tr>
 <td>env</td>
-<td>VAR|VAR=VALUE</td>
+<td>VAR|VAR&#x3D;VALUE</td>
 <td></td>
 <td>定义环境变量</td>
 </tr>
 <tr>
 <td>include</td>
-<td>/path/file</td>
-<td>include mime.types;<br />include vhost/*.conf;</td>
+<td>&#x2F;path&#x2F;file</td>
+<td>include mime.types;<br />include vhost&#x2F;*.conf;</td>
 <td>嵌入其他配置文件</td>
 </tr>
 <tr>
 <td>pid</td>
-<td>/path/file</td>
-<td>pid logs/nginx.pid;</td>
+<td>&#x2F;path&#x2F;file</td>
+<td>pid logs&#x2F;nginx.pid;</td>
 <td>pid文件的路径</td>
 </tr>
 <tr>
@@ -546,8 +547,8 @@
 </tr>
 <tr>
 <td>lock_file</td>
-<td>/path/file</td>
-<td>lock_file logs/nginx.lock;</td>
+<td>&#x2F;path&#x2F;file</td>
+<td>lock_file logs&#x2F;nginx.lock;</td>
 <td>lock文件的路径，文件锁</td>
 </tr>
 <tr>
@@ -564,7 +565,7 @@
 </tr>
 <tr>
 <td>use</td>
-<td>[kqueue|rtsig|epoll|<br />/dev/poll|select|poll|eventport]</td>
+<td>[kqueue|rtsig|epoll|<br />&#x2F;dev&#x2F;poll|select|poll|eventport]</td>
 <td></td>
 <td>选择事件模型</td>
 </tr>
@@ -575,11 +576,11 @@
 <td>每个worker的最大连接数</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">accept_mutex</span><br><span class="line">master进程监听web端口，fork出多个子进程，这些子进程开始同时监听同一个web端口。假如，在某一时刻，所有的worker子进程都休眠且等待新连接的系统调用(epoll_wait)，这时有一个用户向服务端发起连接，内核收到TCP的SYN包时，会激活所有的休眠worker子进程，此时只有最先开始执行accept的子进程可以成功建立新连接，而其他worker子进程都会accept失败，这些失败accept失败的子进程被内核唤醒是不必要的，这个现象被称为&quot;惊群&quot;。</span><br><span class="line">通过设置accept_mutex可以保证某一时刻仅能有一个子进程监听web端口(只有调用ngx_trylock_accept_mutex方法后，当前worker进程才会去试着监听web端口)，从而解决&quot;惊群&quot;问题。</span><br><span class="line">如关闭accept_mutex，建立TCP连接的耗时会更短，但worker进程之间的负载会非常不均衡。</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">accept_mutex</span><br><span class="line">master进程监听web端口，fork出多个子进程，这些子进程开始同时监听同一个web端口。假如，在某一时刻，所有的worker子进程都休眠且等待新连接的系统调用(epoll_wait)，这时有一个用户向服务端发起连接，内核收到TCP的SYN包时，会激活所有的休眠worker子进程，此时只有最先开始执行accept的子进程可以成功建立新连接，而其他worker子进程都会accept失败，这些失败accept失败的子进程被内核唤醒是不必要的，这个现象被称为&quot;惊群&quot;。</span><br><span class="line">通过设置accept_mutex可以保证某一时刻仅能有一个子进程监听web端口(只有调用ngx_trylock_accept_mutex方法后，当前worker进程才会去试着监听web端口)，从而解决&quot;惊群&quot;问题。</span><br><span class="line">如关闭accept_mutex，建立TCP连接的耗时会更短，但worker进程之间的负载会非常不均衡。</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">accept_mutex_delay</span><br><span class="line">如果一个worker进程试图取accept锁没有取到，它至少等待accept_mutex_delay定义的时间间隔后才能再次试图取锁。</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">accept_mutex_delay</span><br><span class="line">如果一个worker进程试图取accept锁没有取到，它至少等待accept_mutex_delay定义的时间间隔后才能再次试图取锁。</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">multi_accept</span><br><span class="line">当事件模型通知有新连接时，尽可能对本次调度中客户端发起的所有TCP请求都建立连接。</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">multi_accept</span><br><span class="line">当事件模型通知有新连接时，尽可能对本次调度中客户端发起的所有TCP请求都建立连接。</span><br></pre></td></tr></table></figure></div>
 
 <ul>
 <li>静态web服务器相关配置项</li>
@@ -630,16 +631,16 @@
 <td>匹配用户请求中的uri</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">listen</span><br><span class="line">示例:</span><br><span class="line">listen 127.0.0.1:8000;</span><br><span class="line">listen 127.0.0.1;</span><br><span class="line">listen 8000;</span><br><span class="line">listen *:8000;</span><br><span class="line">listen localhost:8000;</span><br><span class="line"></span><br><span class="line">ipv6:</span><br><span class="line">listen [::]:8000;</span><br><span class="line">listen [fe80::1];</span><br><span class="line">listen [:::a8c9:1234]:80;</span><br><span class="line"></span><br><span class="line">增加参数:</span><br><span class="line">listen 443 default_server ssl;</span><br><span class="line">listen 127.0.0.1 default_server accept_filter=dataready backlog=1024;</span><br><span class="line"></span><br><span class="line">参数描述:</span><br><span class="line">default: 将所在的server块作为整个web服务的默认server块。如果没有设置那么将会以nginx.conf中找到的第一个server块作为默认的server块。当一个请求无法匹配配置文件中的所有主机的域名时，就会选用默认的虚拟主机。</span><br><span class="line">default_server: 同上。</span><br><span class="line">backlog=num: 表示TCP中backlog队列的大小。默认为-1，表示不予设置。在TCP建立三次握手过程中，进程还没有开始处理监听句柄，这是backlog队列会放置这些新连接。如果backlog队列已满，还有新的客户端试图通过三次握手建立TCP连接，这时客户端将会建立连接失败。</span><br><span class="line">rcvbuf=size: 设置监听句柄的SO_RCVBUF参数。</span><br><span class="line">sndbuf=size: 设置监听句柄的SO_SNDBUF参数。</span><br><span class="line">accept_filter: 设置accept过滤器，只对FreeBSD系统有用。</span><br><span class="line">deferred: 在设置该参数后，若用户发起建立连接请求，并完成了TCP的三次握手，内核也不会为了这次的连接调度worker进程来处理，只有用户真的发送请求数据时(内核已在网卡中收到请求数据包)，内核才会唤醒worker进程处理这个连接。这个参数适用于大并发的情况，它减轻了worker进程的负担，当请求数据来临时，worker进程才会开始处理这个连接。</span><br><span class="line">bind: 绑定当前端口/地址对，只有同时对一个端口监听多个地址时才会生效。</span><br><span class="line">ssl: 在当前建立的端口上建立的连接必须基于ssl协议。</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">listen</span><br><span class="line">示例:</span><br><span class="line">listen 127.0.0.1:8000;</span><br><span class="line">listen 127.0.0.1;</span><br><span class="line">listen 8000;</span><br><span class="line">listen *:8000;</span><br><span class="line">listen localhost:8000;</span><br><span class="line"></span><br><span class="line">ipv6:</span><br><span class="line">listen [::]:8000;</span><br><span class="line">listen [fe80::1];</span><br><span class="line">listen [:::a8c9:1234]:80;</span><br><span class="line"></span><br><span class="line">增加参数:</span><br><span class="line">listen 443 default_server ssl;</span><br><span class="line">listen 127.0.0.1 default_server accept_filter=dataready backlog=1024;</span><br><span class="line"></span><br><span class="line">参数描述:</span><br><span class="line">default: 将所在的server块作为整个web服务的默认server块。如果没有设置那么将会以nginx.conf中找到的第一个server块作为默认的server块。当一个请求无法匹配配置文件中的所有主机的域名时，就会选用默认的虚拟主机。</span><br><span class="line">default_server: 同上。</span><br><span class="line">backlog=num: 表示TCP中backlog队列的大小。默认为-1，表示不予设置。在TCP建立三次握手过程中，进程还没有开始处理监听句柄，这是backlog队列会放置这些新连接。如果backlog队列已满，还有新的客户端试图通过三次握手建立TCP连接，这时客户端将会建立连接失败。</span><br><span class="line">rcvbuf=size: 设置监听句柄的SO_RCVBUF参数。</span><br><span class="line">sndbuf=size: 设置监听句柄的SO_SNDBUF参数。</span><br><span class="line">accept_filter: 设置accept过滤器，只对FreeBSD系统有用。</span><br><span class="line">deferred: 在设置该参数后，若用户发起建立连接请求，并完成了TCP的三次握手，内核也不会为了这次的连接调度worker进程来处理，只有用户真的发送请求数据时(内核已在网卡中收到请求数据包)，内核才会唤醒worker进程处理这个连接。这个参数适用于大并发的情况，它减轻了worker进程的负担，当请求数据来临时，worker进程才会开始处理这个连接。</span><br><span class="line">bind: 绑定当前端口/地址对，只有同时对一个端口监听多个地址时才会生效。</span><br><span class="line">ssl: 在当前建立的端口上建立的连接必须基于ssl协议。</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server_name</span><br><span class="line">server_name后可以跟多个主机名称，在处理一个http请求时，Nginx会取出header头中的Host，与每个server中的server_name进行匹配，以此决定到底由哪个server块来处理这个请求。匹配的优先级:</span><br><span class="line">1.首先选择所有字符串完全匹配的server_name</span><br><span class="line">2.其次选择通配符在前面的server_name</span><br><span class="line">3.再次选择通配符在后面的server_name</span><br><span class="line">4.最后选择使用正则表达式匹配的server_name,如~^\.test\.com$</span><br><span class="line">如果Host与所有的server_name都不匹配，这时将会按照下面的顺序处理server块:</span><br><span class="line">1.优先选择在liten配置项后加入[default|default_server]的server块</span><br><span class="line">2.找到匹配listen端口的第一个server块</span><br><span class="line">如果server_name后面跟着空字符串(如server_name &quot;&quot;;)，那么表示匹配没有Host这个http头部的请求。</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server_name</span><br><span class="line">server_name后可以跟多个主机名称，在处理一个http请求时，Nginx会取出header头中的Host，与每个server中的server_name进行匹配，以此决定到底由哪个server块来处理这个请求。匹配的优先级:</span><br><span class="line">1.首先选择所有字符串完全匹配的server_name</span><br><span class="line">2.其次选择通配符在前面的server_name</span><br><span class="line">3.再次选择通配符在后面的server_name</span><br><span class="line">4.最后选择使用正则表达式匹配的server_name,如~^\.test\.com$</span><br><span class="line">如果Host与所有的server_name都不匹配，这时将会按照下面的顺序处理server块:</span><br><span class="line">1.优先选择在liten配置项后加入[default|default_server]的server块</span><br><span class="line">2.找到匹配listen端口的第一个server块</span><br><span class="line">如果server_name后面跟着空字符串(如server_name &quot;&quot;;)，那么表示匹配没有Host这个http头部的请求。</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server_name_in_redirect</span><br><span class="line">当打开时，表示在重定向请求时会使用server_name里配置的第一个主机名代替原先请求中的Host头部。</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server_name_in_redirect</span><br><span class="line">当打开时，表示在重定向请求时会使用server_name里配置的第一个主机名代替原先请求中的Host头部。</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location</span><br><span class="line">匹配规则:</span><br><span class="line">= 完全匹配</span><br><span class="line">~ 大小写敏感</span><br><span class="line">~* 忽略大小写</span><br><span class="line">^~ 表示只要前半部分匹配即可</span><br><span class="line">@ 表示仅用于Nginx内部请求之间的重定向，带@的location不直接处理用户的请求，例如 error_page, try_files</span><br><span class="line">优先级： </span><br><span class="line">= 高于 ^~ 高于 ~* 等于 ~ 高于 /</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location</span><br><span class="line">匹配规则:</span><br><span class="line">= 完全匹配</span><br><span class="line">~ 大小写敏感</span><br><span class="line">~* 忽略大小写</span><br><span class="line">^~ 表示只要前半部分匹配即可</span><br><span class="line">@ 表示仅用于Nginx内部请求之间的重定向，带@的location不直接处理用户的请求，例如 error_page, try_files</span><br><span class="line">优先级： </span><br><span class="line">= 高于 ^~ 高于 ~* 等于 ~ 高于 /</span><br></pre></td></tr></table></figure></div>
 
 <ul>
-<li>文件路径的定义               </li>
+<li>文件路径的定义</li>
 </ul>
 <table>
 <thead>
@@ -653,25 +654,25 @@
 <tbody><tr>
 <td>root</td>
 <td>path</td>
-<td>/var/www/html</td>
+<td>&#x2F;var&#x2F;www&#x2F;html</td>
 <td>资源路径</td>
 </tr>
 <tr>
 <td>alias</td>
 <td>path</td>
-<td>/var/www/html</td>
+<td>&#x2F;var&#x2F;www&#x2F;html</td>
 <td>资源路径</td>
 </tr>
 <tr>
 <td>index</td>
 <td>file…</td>
-<td>/index.html /index.php</td>
+<td>&#x2F;index.html &#x2F;index.php</td>
 <td>配置首页</td>
 </tr>
 <tr>
 <td>error_page</td>
 <td>[code] uri</td>
-<td>404 /404.html</td>
+<td>404 &#x2F;404.html</td>
 <td>根据http返回码重定向页面</td>
 </tr>
 <tr>
@@ -687,11 +688,11 @@
 <td>逐个尝试path</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root和alias的区别</span><br><span class="line">location /conf &#123;</span><br><span class="line">	root /usr/local/nginx;</span><br><span class="line">&#125;</span><br><span class="line">location /conf &#123;</span><br><span class="line">	alias /usr/local/nginx;</span><br><span class="line">&#125;</span><br><span class="line">请求uri为/conf/nginx.conf</span><br><span class="line">对于root会访问本地文件/usr/local/nginx/conf/nginx.conf</span><br><span class="line">对于alias会访问本地文件/usr/local/nginx/nginx.conf</span><br><span class="line"></span><br><span class="line">alias支持添加正则表达式</span><br><span class="line">location ~ ^/test/(\w+)\.(\w+)$ &#123;</span><br><span class="line">	alias /usr/local/nginx/$2/$1.$2;</span><br><span class="line">&#125;</span><br><span class="line">在访问/test/nginx.conf时，nginx会返回/usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root和alias的区别</span><br><span class="line">location /conf &#123;</span><br><span class="line">	root /usr/local/nginx;</span><br><span class="line">&#125;</span><br><span class="line">location /conf &#123;</span><br><span class="line">	alias /usr/local/nginx;</span><br><span class="line">&#125;</span><br><span class="line">请求uri为/conf/nginx.conf</span><br><span class="line">对于root会访问本地文件/usr/local/nginx/conf/nginx.conf</span><br><span class="line">对于alias会访问本地文件/usr/local/nginx/nginx.conf</span><br><span class="line"></span><br><span class="line">alias支持添加正则表达式</span><br><span class="line">location ~ ^/test/(\w+)\.(\w+)$ &#123;</span><br><span class="line">	alias /usr/local/nginx/$2/$1.$2;</span><br><span class="line">&#125;</span><br><span class="line">在访问/test/nginx.conf时，nginx会返回/usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">error_page</span><br><span class="line">当对某个请求返回错误码时，如果匹配上了error_page中设置的code，则重定向到新的uri中，例如:</span><br><span class="line">error_page 404 /404.html</span><br><span class="line">error_page 502 503 504 /50x.html</span><br><span class="line">error_page 403 http://example.com/forbidden.html</span><br><span class="line">error_page 404 = @fetch</span><br><span class="line">重定向后，http错误和之前的相同，可通过&quot;=&quot;来更改返回的错误码，例如:</span><br><span class="line">error_page 404 =200 /empty.gif</span><br><span class="line">也可以根据重定向后的实际处理的结果设置错误码:</span><br><span class="line">error_page 404 = /empty.gif</span><br><span class="line"></span><br><span class="line">重定向到其他location</span><br><span class="line">location / &#123;</span><br><span class="line">	error_page 404 @fallback;</span><br><span class="line">&#125;</span><br><span class="line">location @fallback &#123;</span><br><span class="line">	proxy_pass http://backend;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">error_page</span><br><span class="line">当对某个请求返回错误码时，如果匹配上了error_page中设置的code，则重定向到新的uri中，例如:</span><br><span class="line">error_page 404 /404.html</span><br><span class="line">error_page 502 503 504 /50x.html</span><br><span class="line">error_page 403 http://example.com/forbidden.html</span><br><span class="line">error_page 404 = @fetch</span><br><span class="line">重定向后，http错误和之前的相同，可通过&quot;=&quot;来更改返回的错误码，例如:</span><br><span class="line">error_page 404 =200 /empty.gif</span><br><span class="line">也可以根据重定向后的实际处理的结果设置错误码:</span><br><span class="line">error_page 404 = /empty.gif</span><br><span class="line"></span><br><span class="line">重定向到其他location</span><br><span class="line">location / &#123;</span><br><span class="line">	error_page 404 @fallback;</span><br><span class="line">&#125;</span><br><span class="line">location @fallback &#123;</span><br><span class="line">	proxy_pass http://backend;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">try_files</span><br><span class="line">try_files后要跟若干路径，如path1 path2，而且最后必须要有uri参数，该配置会顺序访问每个path，如果可以有效地读取，就直接返回这个path对应的文件结束请求，否则继续向下访问。如果所有的path都找不到有效的文件，就重定向到最后的参数uri上。因此，最后这个uri必须存在，而且它应该时可以有效重定向的。例如:</span><br><span class="line">try_files /system/maintenance.html $uri $uri/index.html $uri.html @other</span><br><span class="line">location @other &#123;</span><br><span class="line">	proxy_pass http://backend;</span><br><span class="line">&#125;</span><br><span class="line">也可通过错误码和error_page配合使用，例如:</span><br><span class="line">location / &#123;</span><br><span class="line">	try_files $uri $uri/ =404</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">try_files</span><br><span class="line">try_files后要跟若干路径，如path1 path2，而且最后必须要有uri参数，该配置会顺序访问每个path，如果可以有效地读取，就直接返回这个path对应的文件结束请求，否则继续向下访问。如果所有的path都找不到有效的文件，就重定向到最后的参数uri上。因此，最后这个uri必须存在，而且它应该时可以有效重定向的。例如:</span><br><span class="line">try_files /system/maintenance.html $uri $uri/index.html $uri.html @other</span><br><span class="line">location @other &#123;</span><br><span class="line">	proxy_pass http://backend;</span><br><span class="line">&#125;</span><br><span class="line">也可通过错误码和error_page配合使用，例如:</span><br><span class="line">location / &#123;</span><br><span class="line">	try_files $uri $uri/ =404</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 <ul>
 <li>内存及磁盘资源的分配</li>
@@ -732,7 +733,7 @@
 <tr>
 <td>client_body_buffer_size</td>
 <td>size</td>
-<td>8k/16k</td>
+<td>8k&#x2F;16k</td>
 <td>存储HTTP包体的内存buffer大小</td>
 </tr>
 <tr>
@@ -754,7 +755,7 @@
 <td>请求内存池大小</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">client_body_in_single_buffer</span><br><span class="line">用户请求中的HTTP包体一律存储到内存的buffer中，但是如果HTTP包体大小超过client_body_buffer_size设置的值，包体还是会写入到磁盘文件中</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">client_body_in_single_buffer</span><br><span class="line">用户请求中的HTTP包体一律存储到内存的buffer中，但是如果HTTP包体大小超过client_body_buffer_size设置的值，包体还是会写入到磁盘文件中</span><br></pre></td></tr></table></figure></div>
 
 <ul>
 <li>网络连接设置</li>
@@ -841,9 +842,9 @@
 <td>是否带TCP_CORK选项</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reset_timeout_connection</span><br><span class="line">这个选项打开后，Nginx会在某个连接超时后，不是使用正常的四次挥手关闭TCP连接，而是直接向用户发送RST重置包，不再等待用的应答。相比正常关闭的方式，它使得服务器避免产生许多处于FIN_WAIT_1,FIN_WAIT_2,TIME_WAIT状态的连接</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reset_timeout_connection</span><br><span class="line">这个选项打开后，Nginx会在某个连接超时后，不是使用正常的四次挥手关闭TCP连接，而是直接向用户发送RST重置包，不再等待用的应答。相比正常关闭的方式，它使得服务器避免产生许多处于FIN_WAIT_1,FIN_WAIT_2,TIME_WAIT状态的连接</span><br></pre></td></tr></table></figure></div>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lingering_close</span><br><span class="line">该配置控制Nginx关闭用户连接的方式</span><br><span class="line">always: 关闭用户连接前必须无条件地处理连接上所有用户发送的数据</span><br><span class="line">off: 表示关闭连接时完全不管连接上是否已经有准备就绪的来着用户的数据</span><br><span class="line">on: 中间值，一般情况下在关闭连接前都会处理连接上的用户数据，除了有些情况下在业务上认定这之后的数据是不必要的</span><br><span class="line"></span><br><span class="line">lingering_close启用后，对上传大文件很有用，当用户请求的Content-Length大于max_client_body_size配置时，Nginx服务会立刻项用户返回413(Request entity too large)响应。但是，很多客户端可能不管413返回值，仍然持续不断地上传HTTP body，这时，经过lingering_time设置的时间后，Nginx将不管用户是否仍在上传，都会把连接关闭掉</span><br><span class="line"></span><br><span class="line">在关闭连接前，会检测是否有用户发送的数据到达服务器，如果超过lingering_timeout时间后还没有数据可读，就会直接关闭连接；否则，必须在读取完连接缓冲区上的数据并丢弃掉后才会关闭连接</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lingering_close</span><br><span class="line">该配置控制Nginx关闭用户连接的方式</span><br><span class="line">always: 关闭用户连接前必须无条件地处理连接上所有用户发送的数据</span><br><span class="line">off: 表示关闭连接时完全不管连接上是否已经有准备就绪的来着用户的数据</span><br><span class="line">on: 中间值，一般情况下在关闭连接前都会处理连接上的用户数据，除了有些情况下在业务上认定这之后的数据是不必要的</span><br><span class="line"></span><br><span class="line">lingering_close启用后，对上传大文件很有用，当用户请求的Content-Length大于max_client_body_size配置时，Nginx服务会立刻项用户返回413(Request entity too large)响应。但是，很多客户端可能不管413返回值，仍然持续不断地上传HTTP body，这时，经过lingering_time设置的时间后，Nginx将不管用户是否仍在上传，都会把连接关闭掉</span><br><span class="line"></span><br><span class="line">在关闭连接前，会检测是否有用户发送的数据到达服务器，如果超过lingering_timeout时间后还没有数据可读，就会直接关闭连接；否则，必须在读取完连接缓冲区上的数据并丢弃掉后才会关闭连接</span><br></pre></td></tr></table></figure></div>
 
 <ul>
 <li>MIME类型的设置</li>
@@ -866,7 +867,7 @@
 <tr>
 <td>default_type</td>
 <td>MIME-type</td>
-<td>text/plain</td>
+<td>text&#x2F;plain</td>
 <td>当找不到映射时使用的默认MIME type</td>
 </tr>
 <tr>
@@ -919,7 +920,7 @@
 <td>表示发送一定大小后再限速</td>
 </tr>
 </tbody></table>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">limit_except</span></span><br><span class="line">limit_except GET &#123;</span><br><span class="line">	<span class="attribute">allow</span> <span class="number">192.168.1.0</span>/<span class="number">32</span>;</span><br><span class="line">	<span class="attribute">deny</span> all;</span><br><span class="line">&#125;</span><br><span class="line">方法名取值包括:GET、HEAD、POST、PUT、DELETE、MKCOL、COPY、MOVE、OPTIONS、PROPFIND、PROPPATCH、LOCK、UNLOCK、PATCH等</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Nginx"><figure class="iseeu highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">limit_except</span></span><br><span class="line">limit_except GET &#123;</span><br><span class="line">	<span class="attribute">allow</span> <span class="number">192.168.1.0</span>/<span class="number">32</span>;</span><br><span class="line">	<span class="attribute">deny</span> all;</span><br><span class="line">&#125;</span><br><span class="line">方法名取值包括:GET、HEAD、POST、PUT、DELETE、MKCOL、COPY、MOVE、OPTIONS、PROPFIND、PROPPATCH、LOCK、UNLOCK、PATCH等</span><br></pre></td></tr></table></figure></div>
 
 <ul>
 <li>文件操作的优化</li>
@@ -959,7 +960,7 @@
 </tr>
 <tr>
 <td>open_file_cache</td>
-<td>max=num [inactive=time] off</td>
+<td>max&#x3D;num [inactive&#x3D;time] off</td>
 <td>off</td>
 <td>打开文件缓存，LRU算法淘汰</td>
 </tr>
@@ -1022,7 +1023,7 @@
 <td>merge_slashes</td>
 <td>on|off</td>
 <td>on</td>
-<td>是否合并相邻的”/“</td>
+<td>是否合并相邻的”&#x2F;“</td>
 </tr>
 <tr>
 <td>resolver</td>
@@ -1043,7 +1044,7 @@
 <td>请求出错时是否在响应中标明Nginx版本</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if_modified_since</span><br><span class="line">出于性能考虑，Web浏览器一般会在客户端本地缓存一些文件，并存储当时获取的时间。这样下次向Web服务器获取缓存过的资源时，就可以用If-Modified-Since头部把上次获取的时间捎带上，而if_modified_since将根据后面的参数决定如何处理If-Modified-Since头部</span><br><span class="line">相关参数说明:</span><br><span class="line">off: 忽略If-Modified-Since头部，正常返回文件内容，响应码200</span><br><span class="line">exact: 当If-Modified-Since与文件的上次修改时间精准匹配时返回304(Not Modified)，表示没有修改，浏览器直接读取缓存，否则正常返回文件内容，返回200</span><br><span class="line">before: 当文件的上次修改时间比If-Modified-Since的时间早时返回304(Not Modified)，表示没有修改，浏览器直接读取缓存，否则正常返回文件内容，返回200</span><br></pre></td></tr></table></figure>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if_modified_since</span><br><span class="line">出于性能考虑，Web浏览器一般会在客户端本地缓存一些文件，并存储当时获取的时间。这样下次向Web服务器获取缓存过的资源时，就可以用If-Modified-Since头部把上次获取的时间捎带上，而if_modified_since将根据后面的参数决定如何处理If-Modified-Since头部</span><br><span class="line">相关参数说明:</span><br><span class="line">off: 忽略If-Modified-Since头部，正常返回文件内容，响应码200</span><br><span class="line">exact: 当If-Modified-Since与文件的上次修改时间精准匹配时返回304(Not Modified)，表示没有修改，浏览器直接读取缓存，否则正常返回文件内容，返回200</span><br><span class="line">before: 当文件的上次修改时间比If-Modified-Since的时间早时返回304(Not Modified)，表示没有修改，浏览器直接读取缓存，否则正常返回文件内容，返回200</span><br></pre></td></tr></table></figure></div>
 
 <p>在修改nginx配置文件和打日志的过程中可以带入一些变量，以下列出ngx_http_core_module模块提供的一些常用变量:</p>
 <table>
@@ -1055,11 +1056,11 @@
 </thead>
 <tbody><tr>
 <td>$arg_PARAMETER</td>
-<td>HTTP请求中某个参数的值，如/index.html?size=100，可以用$arg_size取得100这个值</td>
+<td>HTTP请求中某个参数的值，如&#x2F;index.html?size&#x3D;100，可以用$arg_size取得100这个值</td>
 </tr>
 <tr>
 <td>$args</td>
-<td>HTTP请求中的完整参数。例如，在请求/index.html?_w=120&amp;_h=120中，$args表示字符串w=120&amp;h=120</td>
+<td>HTTP请求中的完整参数。例如，在请求&#x2F;index.html?_w&#x3D;120&amp;_h&#x3D;120中，$args表示字符串w&#x3D;120&amp;h&#x3D;120</td>
 </tr>
 <tr>
 <td>$binary_remote_addr</td>
@@ -1163,7 +1164,7 @@
 </tr>
 <tr>
 <td>$scheme</td>
-<td>表示HTTP scheme，如在请求<a target="_blank" rel="noopener" href="https://nginx.org/">https://nginx.org</a> 中表示https</td>
+<td>表示HTTP scheme，如在请求<a class="link"   target="_blank" rel="noopener" href="https://nginx.org/" >https://nginx.org <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 中表示https</td>
 </tr>
 <tr>
 <td>$server_addr</td>
@@ -1179,13 +1180,13 @@
 </tr>
 <tr>
 <td>$server_protocol</td>
-<td>表示服务器向客户端发送响应的协议，如HTTP/1.1或HTTP/1.0</td>
+<td>表示服务器向客户端发送响应的协议，如HTTP&#x2F;1.1或HTTP&#x2F;1.0</td>
 </tr>
 </tbody></table>
 <h2 id="Linux网络参数调优"><a href="#Linux网络参数调优" class="headerlink" title="Linux网络参数调优"></a>Linux网络参数调优</h2><p>由于默认的 Linux内核参数考虑的是最通用的场景,这明显不符合用于支持高并发访问的Web服务器的定义,所以需要修改 Linux内核参数,使得 Nginx可以拥有更高的性能。</p>
 <p>在优化内核时,可以做的事情很多,不过,我们通常会根据业务特点来进行调整,当Nginx作为静态Web内容服务器、反向代理服务器或是提供图片缩略图功能(实时压缩图片)的服务器时,其内核参数的调整都是不同的。这里只针对最通用的、使 Nginx支持更多并发请求的TCP网络参数做简单说明。</p>
-<p>首先,需要修改/etc/sysctl. conf来更改内核参数。例如,最常用的配置:</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这个参数表示进程(比如一个worker进程)可以同时打开的最大句柄数,这个参数直接限制最大并发连接数,需根据实际情况配置</span></span><br><span class="line"><span class="meta">fs.file-max</span> = <span class="string">999999</span></span><br><span class="line"><span class="comment">#这个参数设置为1,表示允许将 TIME-WAIT状态的socket重新用于新的TCP连接,这对于服务器来说很有意义,因为服务器上总会有大量TIME-WAIT状态的连接</span></span><br><span class="line"><span class="meta">net.ipv4.tcp_tw_reuse</span> = <span class="string">1</span></span><br><span class="line"><span class="comment">#这个参数表示当keepalive启用时,TCP发送keepalive消息的频度。默认是2小时,若将其设置得小一些,可以更快地清理无效的连接。</span></span><br><span class="line"><span class="meta">net.ipv4.tcp_keepalive_time</span> = <span class="string">600</span></span><br><span class="line"><span class="comment">#这个参数表示当服务器主动关闭连接时,socket保持在FIN-WAIT-2状态的最大时间</span></span><br><span class="line"><span class="meta">net.ipv4.tcp_fin_timeout</span> = <span class="string">30</span></span><br><span class="line"><span class="comment">#这个参数表示操作系统允许TIME-WAIT套接字数量的最大值,如果超过这个数字,TIME-WAIT套接字将立刻被清除并打印警告信息。该参数默从为180000,过多的TIME-WAIT套接字会使web服务器变慢 </span></span><br><span class="line"><span class="meta">net.ipv4.tcp_max_tw_buckets</span> = <span class="string">5000</span></span><br><span class="line"><span class="comment">#这个参数定义了在UDP和TCP连接中本地(不包括连接的远端)端口的取值范围。 </span></span><br><span class="line"><span class="meta">net.ipv4.ip_local_port_range</span> = <span class="string">1024 61000</span></span><br><span class="line"><span class="comment">#这个参数定义了TCP接收缓存(用于TCP接收滑动窗口)的最小值、默认值、最大值。</span></span><br><span class="line"><span class="meta">net.ipv4.tcp_rmem</span> = <span class="string">4096 32768 262142</span></span><br><span class="line"><span class="comment">#这个参数定义了TCP发送缓存(用于TCP发送滑动窗口)的最小值、默认值、最大值。</span></span><br><span class="line"><span class="meta">net.ipv4.tcp_wmem</span>=<span class="string">4096 32768 262142</span></span><br><span class="line"><span class="comment">#当网卡接收数据包的速度大于内核处理的速度时,会有一个队列保存这些数据包。这个参数表示该队列的最大值</span></span><br><span class="line"><span class="meta">net.core.netdev_max_backlog</span> = <span class="string">8096</span></span><br><span class="line"><span class="comment">#这个参数表示内核套接字接收缓存区默认的大小</span></span><br><span class="line"><span class="meta">net.core.rmem_default</span> = <span class="string">262144</span></span><br><span class="line"><span class="comment">#这个参数表示内核套接字发送缓存区默认的大小</span></span><br><span class="line"><span class="meta">net.core.wmem_default</span> = <span class="string">262144</span></span><br><span class="line"><span class="comment">#这个参数表示内核套接字接收缓存区的最大大小</span></span><br><span class="line"><span class="meta">net.core.rmem_max</span> = <span class="string">2097152</span></span><br><span class="line"><span class="comment">#这个参数表示内核套接字发送缓存区的最大大小</span></span><br><span class="line"><span class="meta">net.core.wmem_max</span> = <span class="string">2097152</span></span><br><span class="line"><span class="comment">#该参数与性能无关，用于解决TCP的SYN攻击</span></span><br><span class="line"><span class="meta">net.ipv4.tcp_syncookies</span> = <span class="string">1</span></span><br><span class="line"><span class="comment">#这个参数表示TCP三次握手建立阶段接收SYN请求队列的大长度,默认为1024,将其设置得大一些可以使出现Nginx繁忙来不及accept连接的情况时,Linux不至于丢失客户端发起的连接请求</span></span><br><span class="line"><span class="meta">net.ipv4.tcp_max_syn.backlog</span> = <span class="string">1024</span></span><br></pre></td></tr></table></figure>
+<p>首先,需要修改&#x2F;etc&#x2F;sysctl. conf来更改内核参数。例如,最常用的配置:</p>
+<div class="highlight-container" data-rel="Properties"><figure class="iseeu highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这个参数表示进程(比如一个worker进程)可以同时打开的最大句柄数,这个参数直接限制最大并发连接数,需根据实际情况配置</span></span><br><span class="line"><span class="attr">fs.file-max</span> = <span class="string">999999</span></span><br><span class="line"><span class="comment">#这个参数设置为1,表示允许将 TIME-WAIT状态的socket重新用于新的TCP连接,这对于服务器来说很有意义,因为服务器上总会有大量TIME-WAIT状态的连接</span></span><br><span class="line"><span class="attr">net.ipv4.tcp_tw_reuse</span> = <span class="string">1</span></span><br><span class="line"><span class="comment">#这个参数表示当keepalive启用时,TCP发送keepalive消息的频度。默认是2小时,若将其设置得小一些,可以更快地清理无效的连接。</span></span><br><span class="line"><span class="attr">net.ipv4.tcp_keepalive_time</span> = <span class="string">600</span></span><br><span class="line"><span class="comment">#这个参数表示当服务器主动关闭连接时,socket保持在FIN-WAIT-2状态的最大时间</span></span><br><span class="line"><span class="attr">net.ipv4.tcp_fin_timeout</span> = <span class="string">30</span></span><br><span class="line"><span class="comment">#这个参数表示操作系统允许TIME-WAIT套接字数量的最大值,如果超过这个数字,TIME-WAIT套接字将立刻被清除并打印警告信息。该参数默从为180000,过多的TIME-WAIT套接字会使web服务器变慢 </span></span><br><span class="line"><span class="attr">net.ipv4.tcp_max_tw_buckets</span> = <span class="string">5000</span></span><br><span class="line"><span class="comment">#这个参数定义了在UDP和TCP连接中本地(不包括连接的远端)端口的取值范围。 </span></span><br><span class="line"><span class="attr">net.ipv4.ip_local_port_range</span> = <span class="string">1024 61000</span></span><br><span class="line"><span class="comment">#这个参数定义了TCP接收缓存(用于TCP接收滑动窗口)的最小值、默认值、最大值。</span></span><br><span class="line"><span class="attr">net.ipv4.tcp_rmem</span> = <span class="string">4096 32768 262142</span></span><br><span class="line"><span class="comment">#这个参数定义了TCP发送缓存(用于TCP发送滑动窗口)的最小值、默认值、最大值。</span></span><br><span class="line"><span class="attr">net.ipv4.tcp_wmem</span>=<span class="string">4096 32768 262142</span></span><br><span class="line"><span class="comment">#当网卡接收数据包的速度大于内核处理的速度时,会有一个队列保存这些数据包。这个参数表示该队列的最大值</span></span><br><span class="line"><span class="attr">net.core.netdev_max_backlog</span> = <span class="string">8096</span></span><br><span class="line"><span class="comment">#这个参数表示内核套接字接收缓存区默认的大小</span></span><br><span class="line"><span class="attr">net.core.rmem_default</span> = <span class="string">262144</span></span><br><span class="line"><span class="comment">#这个参数表示内核套接字发送缓存区默认的大小</span></span><br><span class="line"><span class="attr">net.core.wmem_default</span> = <span class="string">262144</span></span><br><span class="line"><span class="comment">#这个参数表示内核套接字接收缓存区的最大大小</span></span><br><span class="line"><span class="attr">net.core.rmem_max</span> = <span class="string">2097152</span></span><br><span class="line"><span class="comment">#这个参数表示内核套接字发送缓存区的最大大小</span></span><br><span class="line"><span class="attr">net.core.wmem_max</span> = <span class="string">2097152</span></span><br><span class="line"><span class="comment">#该参数与性能无关，用于解决TCP的SYN攻击</span></span><br><span class="line"><span class="attr">net.ipv4.tcp_syncookies</span> = <span class="string">1</span></span><br><span class="line"><span class="comment">#这个参数表示TCP三次握手建立阶段接收SYN请求队列的大长度,默认为1024,将其设置得大一些可以使出现Nginx繁忙来不及accept连接的情况时,Linux不至于丢失客户端发起的连接请求</span></span><br><span class="line"><span class="attr">net.ipv4.tcp_max_syn.backlog</span> = <span class="string">1024</span></span><br></pre></td></tr></table></figure></div>
 
 <p>然后执行 sysctl -p命令,使上述修改生效。    </p>
 
@@ -1200,7 +1201,7 @@
         <li><strong>Created at:</strong> 2022-03-13 15:07:10</li>
         
             <li>
-                <strong>Updated at:</strong> 2022-03-13 15:07:10
+                <strong>Updated at:</strong> 2023-05-15 10:38:23
             </li>
         
         <li>
@@ -1274,7 +1275,7 @@
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">Nginx使用总结</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93"><span class="nav-text">Nginx使用总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-text">Nginx进程管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="nav-text">Nginx常用配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98"><span class="nav-text">Linux网络参数调优</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-text">Nginx进程管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE"><span class="nav-text">Nginx常用配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E7%BD%91%E7%BB%9C%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98"><span class="nav-text">Linux网络参数调优</span></a></li></ol>
 
     </div>
 </div>
