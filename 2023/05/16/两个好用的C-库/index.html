@@ -18,15 +18,15 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="最近在学习envoy 的源码，发现里面引用的JSON解析和日志记录的库挺好用的，这里简单记录一下 库源码地址 gabime &#x2F;spdlog  nlohmann &#x2F;json   简单调用环境基于wsl的ubuntu22.04环境 库函数安装 12sudo apt install libspdlog-devsudo apt install nlohmann-json3-dev  s">
+        <meta name="description" content="最近在学习envoy 的源码，发现里面引用的JSON解析和日志记录的库挺好用的，这里简单记录一下">
 <meta property="og:type" content="article">
 <meta property="og:title" content="两个好用的C++库">
 <meta property="og:url" content="http://example.com/2023/05/16/%E4%B8%A4%E4%B8%AA%E5%A5%BD%E7%94%A8%E7%9A%84C-%E5%BA%93/index.html">
 <meta property="og:site_name" content="olldbg的博客">
-<meta property="og:description" content="最近在学习envoy 的源码，发现里面引用的JSON解析和日志记录的库挺好用的，这里简单记录一下 库源码地址 gabime &#x2F;spdlog  nlohmann &#x2F;json   简单调用环境基于wsl的ubuntu22.04环境 库函数安装 12sudo apt install libspdlog-devsudo apt install nlohmann-json3-dev  s">
+<meta property="og:description" content="最近在学习envoy 的源码，发现里面引用的JSON解析和日志记录的库挺好用的，这里简单记录一下">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-05-16T03:59:20.000Z">
-<meta property="article:modified_time" content="2023-05-16T04:18:12.485Z">
+<meta property="article:modified_time" content="2023-05-16T04:20:29.557Z">
 <meta property="article:author" content="liminjun">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Json">
@@ -134,7 +134,7 @@
                                         
                                             <i class="fa-regular fa-house"></i>
                                         
-                                        HOME
+                                        首页
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -150,7 +150,7 @@
                                         
                                             <i class="fa-solid fa-tags"></i>
                                         
-                                        TAGS
+                                        标签
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -166,7 +166,7 @@
                                         
                                             <i class="fa-regular fa-archive"></i>
                                         
-                                        ARCHIVES
+                                        归档
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -182,7 +182,7 @@
                                         
                                             <i class="fa-regular fa-link"></i>
                                         
-                                        LINKS&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                        链接&nbsp;<i class="fa-solid fa-chevron-down"></i>
                                     
                                 </a>
                                 <!-- Submenu -->
@@ -223,7 +223,7 @@
                                 
                                     <i class="fa-regular fa-house"></i>
                                 
-                                HOME
+                                首页
                             
                         </a>
                     </li>
@@ -238,7 +238,7 @@
                                 
                                     <i class="fa-solid fa-tags"></i>
                                 
-                                TAGS
+                                标签
                             
                         </a>
                     </li>
@@ -253,7 +253,7 @@
                                 
                                     <i class="fa-regular fa-archive"></i>
                                 
-                                ARCHIVES
+                                归档
                             
                         </a>
                     </li>
@@ -268,7 +268,7 @@
                                 
                                     <i class="fa-regular fa-link"></i>
                                 
-                                LINKS&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                链接&nbsp;<i class="fa-solid fa-chevron-down"></i>
                             
                         </a>
                     </li>
@@ -330,14 +330,14 @@
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
         <span class="desktop">2023-05-16 11:59:20</span>
         <span class="mobile">2023-05-16 11:59</span>
-        <span class="hover-info">Created</span>
+        <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-05-16 12:18:12</span>
-            <span class="mobile">2023-05-16 12:18</span>
-            <span class="hover-info">Updated</span>
+            <span class="desktop">2023-05-16 12:20:29</span>
+            <span class="mobile">2023-05-16 12:20</span>
+            <span class="hover-info">更新</span>
         </span>
     
 
@@ -376,6 +376,8 @@
 
             <div class="article-content markdown-body">
                 <p>最近在学习<a class="link"   target="_blank" rel="noopener" href="https://github.com/envoyproxy/envoy" >envoy <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>的源码，发现里面引用的JSON解析和日志记录的库挺好用的，这里简单记录一下</p>
+<span id="more"></span>
+
 <h2 id="库源码地址"><a href="#库源码地址" class="headerlink" title="库源码地址"></a>库源码地址</h2><ul>
 <li><a class="link"   target="_blank" rel="noopener" href="https://github.com/gabime" >gabime <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>&#x2F;<strong><a class="link"   target="_blank" rel="noopener" href="https://github.com/gabime/spdlog" >spdlog <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></li>
 <li><a class="link"   target="_blank" rel="noopener" href="https://github.com/nlohmann" >nlohmann <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>&#x2F;<strong><a class="link"   target="_blank" rel="noopener" href="https://github.com/nlohmann/json" >json <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></li>
@@ -404,19 +406,19 @@
                 <div class="post-copyright-info">
                     <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 两个好用的C++库</li>
-        <li><strong>Author:</strong> liminjun</li>
-        <li><strong>Created at:</strong> 2023-05-16 11:59:20</li>
+        <li><strong>标题:</strong> 两个好用的C++库</li>
+        <li><strong>作者:</strong> liminjun</li>
+        <li><strong>创建于:</strong> 2023-05-16 11:59:20</li>
         
             <li>
-                <strong>Updated at:</strong> 2023-05-16 12:18:12
+                <strong>更新于:</strong> 2023-05-16 12:20:29
             </li>
         
         <li>
-            <strong>Link:</strong> https://olldbg.github.io/2023/05/16/两个好用的C-库/
+            <strong>链接:</strong> https://olldbg.github.io/2023/05/16/两个好用的C-库/
         </li>
         <li>
-            <strong>License:</strong> This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            <strong>版权声明:</strong> 本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a> 进行许可。
         </li>
     </ul>
 </div>
@@ -455,7 +457,7 @@
                             >
                                 <span class="title flex-center">
                                     <span class="post-nav-title-item">SpringBoot优雅停机</span>
-                                    <span class="post-nav-item">Next posts</span>
+                                    <span class="post-nav-item">下一篇</span>
                                 </span>
                                 <span class="right arrow-icon flex-center">
                                     <i class="fa-solid fa-chevron-right"></i>
@@ -474,7 +476,7 @@
             <div class="toc-content-container">
                 <div class="post-toc-wrap">
     <div class="post-toc">
-        <div class="toc-title">On this page</div>
+        <div class="toc-title">此页目录</div>
         <div class="page-title">两个好用的C++库</div>
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%93%E6%BA%90%E7%A0%81%E5%9C%B0%E5%9D%80"><span class="nav-text">库源码地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%B0%83%E7%94%A8"><span class="nav-text">简单调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spdlog%E5%BA%93%E8%B0%83%E7%94%A8"><span class="nav-text">spdlog库调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nlohman-json%E5%BA%93%E8%B0%83%E7%94%A8"><span class="nav-text">nlohman-json库调用</span></a></li></ol></li></ol>
 
@@ -507,9 +509,9 @@
         </div>
         
         <div class="theme-info info-item">
-            <span class="powered-by-container">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a></span>
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
                 <br>
-            <span class="theme-version-container">THEME&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.3</a>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.3</a>
         </div>
         
         
@@ -518,7 +520,7 @@
                 2022/8/17 11:45:14
             </div>
             <div>
-                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
         
         
