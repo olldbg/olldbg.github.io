@@ -13,23 +13,24 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2023/05/15/springboot优雅停机/"/>
+    <link rel="canonical" href="http://example.com/2023/05/16/两个好用的c-库/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="说明在生产环境中，当我们需要升级或者停止服务的时候，应该希望当前服务能够服务完所有请求后再停止，从而达成优雅停机">
+        <meta name="description" content="最近在学习envoy 的源码，发现里面引用的JSON解析和日志记录的库挺好用的，这里简单记录一下 库源码地址 gabime &#x2F;spdlog  nlohmann &#x2F;json   简单调用环境基于wsl的ubuntu22.04环境 库函数安装 12sudo apt install libspdlog-devsudo apt install nlohmann-json3-dev  s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringBoot优雅停机">
-<meta property="og:url" content="http://example.com/2023/05/15/Springboot%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA/index.html">
+<meta property="og:title" content="两个好用的C++库">
+<meta property="og:url" content="http://example.com/2023/05/16/%E4%B8%A4%E4%B8%AA%E5%A5%BD%E7%94%A8%E7%9A%84C-%E5%BA%93/index.html">
 <meta property="og:site_name" content="olldbg的博客">
-<meta property="og:description" content="说明在生产环境中，当我们需要升级或者停止服务的时候，应该希望当前服务能够服务完所有请求后再停止，从而达成优雅停机">
+<meta property="og:description" content="最近在学习envoy 的源码，发现里面引用的JSON解析和日志记录的库挺好用的，这里简单记录一下 库源码地址 gabime &#x2F;spdlog  nlohmann &#x2F;json   简单调用环境基于wsl的ubuntu22.04环境 库函数安装 12sudo apt install libspdlog-devsudo apt install nlohmann-json3-dev  s">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-05-15T02:35:39.000Z">
-<meta property="article:modified_time" content="2023-05-15T07:23:58.906Z">
+<meta property="article:published_time" content="2023-05-16T03:59:20.000Z">
+<meta property="article:modified_time" content="2023-05-16T04:18:12.485Z">
 <meta property="article:author" content="liminjun">
-<meta property="article:tag" content="Java">
-<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Json">
+<meta property="article:tag" content="日志">
 <meta name="twitter:card" content="summary">
     
     
@@ -42,7 +43,7 @@
     
     <title>
         
-            SpringBoot优雅停机 -
+            两个好用的C++库 -
         
         olldbg的个人博客
     </title>
@@ -305,7 +306,7 @@
             
             
                 <div class="article-title">
-                    <h1 class="article-title-regular">SpringBoot优雅停机</h1>
+                    <h1 class="article-title-regular">两个好用的C++库</h1>
                 </div>
             
                 
@@ -327,15 +328,15 @@
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-05-15 10:35:39</span>
-        <span class="mobile">2023-05-15 10:35</span>
+        <span class="desktop">2023-05-16 11:59:20</span>
+        <span class="mobile">2023-05-16 11:59</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-05-15 15:23:58</span>
-            <span class="mobile">2023-05-15 15:23</span>
+            <span class="desktop">2023-05-16 12:18:12</span>
+            <span class="mobile">2023-05-16 12:18</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -347,11 +348,15 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/Java/">Java</a>&nbsp;
+                        <a href="/tags/C/">C++</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/SpringBoot/">SpringBoot</a>&nbsp;
+                        | <a href="/tags/Json/">Json</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E6%97%A5%E5%BF%97/">日志</a>&nbsp;
                     </li>
                 
             </ul>
@@ -370,32 +375,28 @@
             
 
             <div class="article-content markdown-body">
-                <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>在生产环境中，当我们需要升级或者停止服务的时候，应该希望当前服务能够服务完所有请求后再停止，从而达成优雅停机</p>
-<span id="more"></span>
+                <p>最近在学习<a class="link"   target="_blank" rel="noopener" href="https://github.com/envoyproxy/envoy" >envoy <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>的源码，发现里面引用的JSON解析和日志记录的库挺好用的，这里简单记录一下</p>
+<h2 id="库源码地址"><a href="#库源码地址" class="headerlink" title="库源码地址"></a>库源码地址</h2><ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://github.com/gabime" >gabime <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>&#x2F;<strong><a class="link"   target="_blank" rel="noopener" href="https://github.com/gabime/spdlog" >spdlog <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://github.com/nlohmann" >nlohmann <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>&#x2F;<strong><a class="link"   target="_blank" rel="noopener" href="https://github.com/nlohmann/json" >json <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></strong></li>
+</ul>
+<h2 id="简单调用"><a href="#简单调用" class="headerlink" title="简单调用"></a>简单调用</h2><p>环境基于wsl的ubuntu22.04环境</p>
+<p>库函数安装</p>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libspdlog-dev</span><br><span class="line">sudo apt install nlohmann-json3-dev</span><br></pre></td></tr></table></figure></div>
 
-<h2 id="SpringBoot如何实现优雅停机"><a href="#SpringBoot如何实现优雅停机" class="headerlink" title="SpringBoot如何实现优雅停机"></a>SpringBoot如何实现优雅停机</h2><p>默认SpringBoot的优雅停机功能是关闭的，需要通过配置项打开</p>
-<div class="highlight-container" data-rel="Properties"><figure class="iseeu highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#server.shutdown=immediate</span></span><br><span class="line"><span class="attr">server.shutdown</span>=<span class="string">graceful</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="spdlog库调用"><a href="#spdlog库调用" class="headerlink" title="spdlog库调用"></a>spdlog库调用</h3><p>这里使用cmake管理工程</p>
+<div class="highlight-container" data-rel="Cmake"><figure class="iseeu highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.15</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(cpp_test)</span><br><span class="line"></span><br><span class="line"><span class="comment">#/usr/lib/x86_64-linux-gnu/cmake</span></span><br><span class="line"><span class="keyword">find_package</span>(spdlog REQUIRED)</span><br><span class="line"><span class="keyword">find_package</span>(FMT REQUIRED)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(main main.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(main spdlog)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(main fmt::fmt)</span><br></pre></td></tr></table></figure></div>
 
-<p>该配置项默认为<code>immediate</code>，即收到停止信号时，直接关闭服务，没有服务完的请求也直接放弃，这样会导致客户端出现报错</p>
-<p>当将此配置改为<code>graceful</code>后，应用在收到停止信号时，会先服务完当前的请求后再关闭服务</p>
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>编写一个测试Controller</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">test</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">20</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>测试代码(直接拷贝的例子)</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;spdlog/spdlog.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// change log pattern</span></span><br><span class="line">    spdlog::<span class="built_in">set_pattern</span>(<span class="string">&quot;[%H:%M:%S %z] [%n] [%^---%L---%$] [thread %t] %v&quot;</span>);</span><br><span class="line"></span><br><span class="line">    spdlog::<span class="built_in">info</span>(<span class="string">&quot;Welcome to spdlog!&quot;</span>);</span><br><span class="line">    spdlog::<span class="built_in">error</span>(<span class="string">&quot;Some error message with arg: &#123;&#125;&quot;</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    spdlog::<span class="built_in">warn</span>(<span class="string">&quot;Easy padding in numbers like &#123;:08d&#125;&quot;</span>, <span class="number">12</span>);</span><br><span class="line">    spdlog::<span class="built_in">critical</span>(<span class="string">&quot;Support for int: &#123;0:d&#125;;  hex: &#123;0:x&#125;;  oct: &#123;0:o&#125;; bin: &#123;0:b&#125;&quot;</span>, <span class="number">42</span>);</span><br><span class="line">    spdlog::<span class="built_in">info</span>(<span class="string">&quot;Support for floats &#123;:03.2f&#125;&quot;</span>, <span class="number">1.23456</span>);</span><br><span class="line">    spdlog::<span class="built_in">info</span>(<span class="string">&quot;Positional args are &#123;1&#125; &#123;0&#125;..&quot;</span>, <span class="string">&quot;too&quot;</span>, <span class="string">&quot;supported&quot;</span>);</span><br><span class="line">    spdlog::<span class="built_in">info</span>(<span class="string">&quot;&#123;:&lt;30&#125;&quot;</span>, <span class="string">&quot;left aligned&quot;</span>);</span><br><span class="line"></span><br><span class="line">    spdlog::<span class="built_in">set_level</span>(spdlog::level::debug); <span class="comment">// Set global log level to debug</span></span><br><span class="line">    spdlog::<span class="built_in">debug</span>(<span class="string">&quot;This message should be displayed..&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Compile time log levels</span></span><br><span class="line">    <span class="comment">// define SPDLOG_ACTIVE_LEVEL to desired level</span></span><br><span class="line">    <span class="built_in">SPDLOG_TRACE</span>(<span class="string">&quot;Some trace message with param &#123;&#125;&quot;</span>, <span class="number">42</span>);</span><br><span class="line">    <span class="built_in">SPDLOG_DEBUG</span>(<span class="string">&quot;Some debug message&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<p>通过curl命令模拟请求应用，正常会睡眠20秒</p>
-<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http://127.0.0.1:9090/test</span><br></pre></td></tr></table></figure></div>
+<p>文档地址：<a class="link"   target="_blank" rel="noopener" href="https://github.com/gabime/spdlog/wiki/1.-QuickStart" >https://github.com/gabime/spdlog/wiki/1.-QuickStart <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>使用还是比较简单的，也能满足90%的日志打印需求</p>
+<h3 id="nlohman-json库调用"><a href="#nlohman-json库调用" class="headerlink" title="nlohman-json库调用"></a>nlohman-json库调用</h3><p>测试代码(也是直接拷贝的例子)</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;nlohmann/json.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> json = nlohmann::json;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    json ex1 = json::<span class="built_in">parse</span>(<span class="string">R&quot;(</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        &quot;pi&quot;: 3.141,</span></span><br><span class="line"><span class="string">        &quot;happy&quot;: true</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    )&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">assert</span>(ex1[<span class="string">&quot;pi&quot;</span>] == <span class="number">3.141</span>);</span><br><span class="line"></span><br><span class="line">    json ex2 = <span class="string">R&quot;(</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        &quot;pi&quot;: 3.141,</span></span><br><span class="line"><span class="string">        &quot;happy&quot;: true</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    )&quot;</span>_json;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">assert</span>(ex2[<span class="string">&quot;pi&quot;</span>] == <span class="number">3.141</span>);</span><br><span class="line"></span><br><span class="line">    json ex3 = &#123;</span><br><span class="line">        &#123;<span class="string">&quot;happy&quot;</span>, <span class="literal">true</span>&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;pi&quot;</span>, <span class="number">3.141</span>&#125;,</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">assert</span>(ex3[<span class="string">&quot;pi&quot;</span>] == <span class="number">3.141</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
-<p>在20秒内，给应用发送<code>SEGTERM</code>信号，应用不会立马结束，会等本次请求服务完再停止，客户端curl也收到响应体test字符串，优雅停机成功</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>这里主要是spring框架利用的jvm的<code>ShutdownHook</code>功能，注册一个<code>ShutdownHook</code>的方法如下</p>
-<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Runtime.getRuntime().addShutdownHook(<span class="keyword">new</span> <span class="title class_">Thread</span>(()-&gt;&#123;</span><br><span class="line">    log.info(<span class="string">&quot;jvm pre destroy&quot;</span>);</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure></div>
-
-<p>当注册上述关闭钩子后，jvm在收到停止信号时，就会调用一段自定义处理逻辑</p>
-<p>spring框架内有一个是否注册关闭钩子的配置项</p>
-<div class="highlight-container" data-rel="Properties"><figure class="iseeu highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.main.register-shutdown-hook</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure></div>
-
-<p>此配置项默认打开，如关闭此配置项，则上述所说的优雅关闭功能也会失效</p>
-<p>此外，注解<code>@PreDestroy</code>的实现，也是基于上述原理</p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>当应用接收到<code>SEGTERM</code>信号后，则不再提供服务，新的请求将会直接被拒绝，所以真正实现优雅，最好可以配合注册中心的线下功能，让新的流量在执行优雅停机之前就不再打到该应用上了</p>
-<p>另外，当应用收到的是强杀指令<code>kill -9</code>，即<code>SEGKILL</code>信号时，操作系统会直接干掉jvm，不给jvm任何狡辩的机会，即使开启上述配置也无法做到优雅停机</p>
+<p>文档地址：<a class="link"   target="_blank" rel="noopener" href="https://json.nlohmann.me/api/basic_json/" >Overview - JSON for Modern C++ (nlohmann.me) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>使用也是非常简单，后面有空对比下几个json解析库的性能</p>
 
             </div>
 
@@ -403,16 +404,16 @@
                 <div class="post-copyright-info">
                     <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> SpringBoot优雅停机</li>
+        <li><strong>Title:</strong> 两个好用的C++库</li>
         <li><strong>Author:</strong> liminjun</li>
-        <li><strong>Created at:</strong> 2023-05-15 10:35:39</li>
+        <li><strong>Created at:</strong> 2023-05-16 11:59:20</li>
         
             <li>
-                <strong>Updated at:</strong> 2023-05-15 15:23:58
+                <strong>Updated at:</strong> 2023-05-16 12:18:12
             </li>
         
         <li>
-            <strong>Link:</strong> https://olldbg.github.io/2023/05/15/Springboot优雅停机/
+            <strong>Link:</strong> https://olldbg.github.io/2023/05/16/两个好用的C-库/
         </li>
         <li>
             <strong>License:</strong> This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
@@ -427,11 +428,15 @@
                 <ul class="post-tags-box">
                     
                         <li class="tag-item">
-                            <a href="/tags/Java/">#Java</a>&nbsp;
+                            <a href="/tags/C/">#C++</a>&nbsp;
                         </li>
                     
                         <li class="tag-item">
-                            <a href="/tags/SpringBoot/">#SpringBoot</a>&nbsp;
+                            <a href="/tags/Json/">#Json</a>&nbsp;
+                        </li>
+                    
+                        <li class="tag-item">
+                            <a href="/tags/%E6%97%A5%E5%BF%97/">#日志</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -442,29 +447,14 @@
             
                 <div class="article-nav">
                     
-                        <div class="article-prev">
-                            <a class="prev"
-                            rel="prev"
-                            href="/2023/05/16/%E4%B8%A4%E4%B8%AA%E5%A5%BD%E7%94%A8%E7%9A%84C-%E5%BA%93/"
-                            >
-                                <span class="left arrow-icon flex-center">
-                                    <i class="fa-solid fa-chevron-left"></i>
-                                </span>
-                                <span class="title flex-center">
-                                    <span class="post-nav-title-item">两个好用的C++库</span>
-                                    <span class="post-nav-item">Prev posts</span>
-                                </span>
-                            </a>
-                        </div>
-                    
                     
                         <div class="article-next">
                             <a class="next"
                             rel="next"
-                            href="/2023/01/24/Java%E9%9B%86%E6%88%90%E5%90%84%E7%A7%8D%E8%84%9A%E6%9C%AC%E8%AF%AD%E8%A8%80/"
+                            href="/2023/05/15/Springboot%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA/"
                             >
                                 <span class="title flex-center">
-                                    <span class="post-nav-title-item">Java集成各种脚本语言</span>
+                                    <span class="post-nav-title-item">SpringBoot优雅停机</span>
                                     <span class="post-nav-item">Next posts</span>
                                 </span>
                                 <span class="right arrow-icon flex-center">
@@ -485,8 +475,8 @@
                 <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">SpringBoot优雅停机</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E4%BC%98%E9%9B%85%E5%81%9C%E6%9C%BA"><span class="nav-text">SpringBoot如何实现优雅停机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C"><span class="nav-text">实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-text">补充</span></a></li></ol>
+        <div class="page-title">两个好用的C++库</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%93%E6%BA%90%E7%A0%81%E5%9C%B0%E5%9D%80"><span class="nav-text">库源码地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%B0%83%E7%94%A8"><span class="nav-text">简单调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spdlog%E5%BA%93%E8%B0%83%E7%94%A8"><span class="nav-text">spdlog库调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nlohman-json%E5%BA%93%E8%B0%83%E7%94%A8"><span class="nav-text">nlohman-json库调用</span></a></li></ol></li></ol>
 
     </div>
 </div>
