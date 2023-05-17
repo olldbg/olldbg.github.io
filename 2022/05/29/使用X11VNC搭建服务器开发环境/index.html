@@ -13,7 +13,7 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2022/05/29/使用x11vnc搭建服务器开发环境/"/>
+    <link rel="canonical" href="https://liminjunblog.life/2022/05/29/使用x11vnc搭建服务器开发环境/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
@@ -21,19 +21,19 @@
         <meta name="description" content="背景公司给配的电脑配置不行，没有固态硬盘，时间一长磁盘老化，读写速度捉急，用来搞开发实在难受。不过有几台公用的高配服务器，于是就想着薅点服务器的羊毛，毕竟服务器硬盘至少都是企业级别的金盘，读写速度还是相当有保障的。经过一段时间的摸索发现以下三种模式可以实现借用服务器进行远程开发：  在服务器上安装虚拟机 1234该方法主要测试了Virtualbox虚拟机软件，该方法的优点是可以安装windows系">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用X11VNC搭建服务器开发环境">
-<meta property="og:url" content="http://example.com/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:url" content="https://liminjunblog.life/2022/05/29/%E4%BD%BF%E7%94%A8X11VNC%E6%90%AD%E5%BB%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/index.html">
 <meta property="og:site_name" content="liminjun的学习笔记">
 <meta property="og:description" content="背景公司给配的电脑配置不行，没有固态硬盘，时间一长磁盘老化，读写速度捉急，用来搞开发实在难受。不过有几台公用的高配服务器，于是就想着薅点服务器的羊毛，毕竟服务器硬盘至少都是企业级别的金盘，读写速度还是相当有保障的。经过一段时间的摸索发现以下三种模式可以实现借用服务器进行远程开发：  在服务器上安装虚拟机 1234该方法主要测试了Virtualbox虚拟机软件，该方法的优点是可以安装windows系">
 <meta property="og:locale">
-<meta property="og:image" content="http://example.com/pic/1653807165(1).png">
-<meta property="og:image" content="http://example.com/pic/1653807888(1).png">
+<meta property="og:image" content="https://liminjunblog.life/pic/1653807165(1).png">
+<meta property="og:image" content="https://liminjunblog.life/pic/1653807888(1).png">
 <meta property="article:published_time" content="2022-05-29T13:49:13.000Z">
 <meta property="article:modified_time" content="2023-05-15T02:38:51.342Z">
 <meta property="article:author" content="liminjun">
 <meta property="article:tag" content="X11VNC">
 <meta property="article:tag" content="远程桌面">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/pic/1653807165(1).png">
+<meta name="twitter:image" content="https://liminjunblog.life/pic/1653807165(1).png">
     
     
     <!--- Icon Part-->
@@ -47,7 +47,7 @@
         
             使用X11VNC搭建服务器开发环境 -
         
-        olldbg的个人博客
+        liminjun的学习笔记
     </title>
     
 <link rel="stylesheet" href="/css/style.css">
@@ -65,7 +65,7 @@
     
     <script id="hexo-configurations">
     let Global = window.Global || {};
-    Global.hexo_config = {"hostname":"example.com","root":"/","language":"cn"};
+    Global.hexo_config = {"hostname":"liminjunblog.life","root":"/","language":"cn"};
     Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[""]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":false,"style":"static","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"olldbg的个人博客","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":false,"links":{"github":"https://github.com/olldbg","instagram":null,"zhihu":null,"twitter":null,"email":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Tags":{"path":"/tags/","icon":"fa-solid fa-tags"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Links":{"icon":"fa-regular fa-link","submenus":{"github":"https://github.com/olldbg"}}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"cloud"},"home":{"sidebar":{"enable":false,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
     Global.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
   </script>
@@ -117,7 +117,7 @@
             
             <a class="logo-title" href="/">
                 
-                olldbg的个人博客
+                liminjun的学习笔记
                 
             </a>
         </div>
@@ -452,7 +452,7 @@
             </li>
         
         <li>
-            <strong>Link:</strong> https://olldbg.github.io/2022/05/29/使用X11VNC搭建服务器开发环境/
+            <strong>Link:</strong> https://liminjunblog.life/2022/05/29/使用X11VNC搭建服务器开发环境/
         </li>
         <li>
             <strong>License:</strong> This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
